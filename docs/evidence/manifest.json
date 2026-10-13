@@ -1,0 +1,81 @@
+{
+  "agregados": {
+    "files": [
+      {
+        "file": "/home/julio/BigData_UPAO/OSIPTEL_Pipeline_PySpark/data/raw/01_agregados/9.1. EQUIPOS SUSTRAIDOS PERDIDOS O RECUPERADOS.xlsx",
+        "sheet": "Dataset",
+        "rows": 1698
+      }
+    ],
+    "rows": 1698,
+    "skipped": [],
+    "raw_provenance": [
+      {
+        "file": "9.1. EQUIPOS SUSTRAIDOS PERDIDOS O RECUPERADOS.xlsx",
+        "bytes": 69497,
+        "sha256": "db9f686cb7fd6e656ab6c74345fe6d70450890a8d7118144034116f8d924808b"
+      }
+    ]
+  },
+  "historicos": {
+    "files": [
+      {
+        "file": "2012.csv.zip:2012.csv",
+        "rows": 4678813
+      },
+      {
+        "file": "2013.csv.zip:2013.csv",
+        "rows": 3043718
+      },
+      {
+        "file": "2014.csv.zip:2014.csv",
+        "rows": 3663117
+      },
+      {
+        "file": "2015.csv.zip:2015.csv",
+        "rows": 4435592
+      }
+    ],
+    "rows": 15821240,
+    "skipped": [],
+    "raw_provenance": [
+      {
+        "file": "2012.csv.zip",
+        "bytes": 25005309,
+        "sha256": "c4b6e18eeec593d9ea08e724fe690cc837d2bbeff670234c8a02c80460fa03b5"
+      },
+      {
+        "file": "2013.csv.zip",
+        "bytes": 15357735,
+        "sha256": "bdf61375f6397f985c0e6add9f052f0964cbcb7b13533805d5e7018c8a8d41aa"
+      },
+      {
+        "file": "2014.csv.zip",
+        "bytes": 20467204,
+        "sha256": "ff05bdb52cf96ab8c4b29d2e02c7697779daa8db5a39b24b556c3e756da65133"
+      },
+      {
+        "file": "2015.csv.zip",
+        "bytes": 26179819,
+        "sha256": "e0bb7f18fbe37fa19a69c00685a39186d80ceb52e697a3ef458220bf95968e32"
+      }
+    ]
+  },
+  "cobertura": {
+    "files": [
+      {
+        "file": "Cobertura móvil por empresa operadora.csv",
+        "rows": 51366
+      }
+    ],
+    "rows": 51366,
+    "skipped": [],
+    "raw_provenance": [
+      {
+        "file": "Cobertura móvil por empresa operadora.csv",
+        "bytes": 7590550,
+        "sha256": "0e2c5336ca94ad9ab2e94dd1ae2d7a7a487ffda47c54e93267db9f0df575f2f0"
+      }
+    ]
+  }
+}

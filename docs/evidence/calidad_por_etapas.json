@@ -1,0 +1,10 @@
+{
+  "agregados": {
+    "total": 1698,
+    "aceptados": 0,
+    "rechazados": 1698,
+    "completitud_valida_pct": 0.0,
+    "filas_guardadas_silver": 0,
+    "tiempo_silver_s": 8.19
+  }
+}
