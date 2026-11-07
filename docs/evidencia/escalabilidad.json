@@ -1,15 +1,15 @@
 {
   "maquina": {
-    "fecha": "2026-11-06T19:49:13",
+    "fecha": "2026-11-06T20:21:03",
     "maquina": "Debian",
     "so": "Linux-6.1.0-35-amd64-x86_64-with-glibc2.36",
     "python": "3.11.2",
     "cpu_logicas": 4,
     "ram_total_gb": 6.73,
     "swap_total_gb": 1.02,
-    "disco_libre_gb": 9.7
+    "disco_libre_gb": 9.6
   },
-  "spark_driver_memory": "4g",
+  "spark_driver_memory": "3g",
   "nota": "réplicas solo para medir rendimiento; cada factor en un proceso aparte",
   "factores": [
     {
@@ -56,6 +56,21 @@
       "mb_en_disco": 62.5,
       "tiempo_relativo_vs_primero": 15.7,
       "volumen_relativo_vs_primero": 100.0
+    },
+    {
+      "factor": 150,
+      "estado": "completado",
+      "duracion_proceso_s": 493.1,
+      "ram_sistema_pico_mb": 4801,
+      "swap_pico_mb": 0,
+      "rss_proceso_pico_mb": 3530,
+      "filas_entrada": 41401200,
+      "tiempo_silver_s": 446.5,
+      "tiempo_gold_s": 14.4,
+      "tiempo_total_s": 460.9,
+      "mb_en_disco": 93.3,
+      "tiempo_relativo_vs_primero": 20.48,
+      "volumen_relativo_vs_primero": 150.0
     }
   ]
 }
