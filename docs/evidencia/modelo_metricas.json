@@ -1,0 +1,202 @@
+{
+  "H1": {
+    "horizonte_meses": 1,
+    "n_train": 256,
+    "n_test": 76,
+    "train": "2018-02-01 a 2024-06-01 (sin 2020-03 a 2021-03)",
+    "test": "2024-07-01 a 2026-01-01",
+    "escala_MASE": 2419.6,
+    "hiperparametros": {
+      "ridge": {
+        "alpha": 1
+      },
+      "random_forest": {
+        "max_depth": null,
+        "min_samples_leaf": 5,
+        "n_estimators": 300
+      },
+      "gradient_boosting": {
+        "learning_rate": 0.03,
+        "max_depth": 2,
+        "n_estimators": 200
+      }
+    },
+    "metricas": {
+      "ingenuo": {
+        "MAE": 1956.8,
+        "MAPE": 7.03,
+        "MASE": 0.809,
+        "sesgo": 118.8,
+        "MAPE_por_operadora": {
+          "BITEL": 12.52,
+          "CLARO": 6.23,
+          "ENTEL": 4.44,
+          "MOVISTAR": 4.92
+        }
+      },
+      "ingenuo_estacional": {
+        "MAE": 2185.2,
+        "MAPE": 7.9,
+        "MASE": 0.903,
+        "sesgo": 64.9,
+        "MAPE_por_operadora": {
+          "BITEL": 17.03,
+          "CLARO": 5.5,
+          "ENTEL": 3.93,
+          "MOVISTAR": 5.15
+        }
+      },
+      "ridge": {
+        "MAE": 1831.8,
+        "MAPE": 6.63,
+        "MASE": 0.757,
+        "sesgo": 412.2,
+        "MAPE_por_operadora": {
+          "BITEL": 11.92,
+          "CLARO": 5.38,
+          "ENTEL": 3.99,
+          "MOVISTAR": 5.21
+        }
+      },
+      "random_forest": {
+        "MAE": 1737.3,
+        "MAPE": 6.32,
+        "MASE": 0.718,
+        "sesgo": 143.9,
+        "MAPE_por_operadora": {
+          "BITEL": 11.82,
+          "CLARO": 5.0,
+          "ENTEL": 3.59,
+          "MOVISTAR": 4.85
+        }
+      },
+      "gradient_boosting": {
+        "MAE": 1707.8,
+        "MAPE": 6.1,
+        "MASE": 0.706,
+        "sesgo": -66.1,
+        "MAPE_por_operadora": {
+          "BITEL": 11.48,
+          "CLARO": 4.99,
+          "ENTEL": 3.49,
+          "MOVISTAR": 4.43
+        }
+      }
+    },
+    "importancias_gb": {
+      "var_estacional": 0.438,
+      "var_lag2": 0.179,
+      "var_lag1": 0.17,
+      "nivel_vs_media12": 0.107,
+      "mes": 0.088,
+      "var_lag3": 0.018,
+      "covid": 0.0
+    },
+    "MAE_prueba_por_operadora": {
+      "BITEL": 2320.8,
+      "CLARO": 2202.4,
+      "ENTEL": 1056.0,
+      "MOVISTAR": 1251.9
+    }
+  },
+  "H3": {
+    "horizonte_meses": 3,
+    "n_train": 248,
+    "n_test": 76,
+    "train": "2018-04-01 a 2024-06-01 (sin 2020-03 a 2021-03)",
+    "test": "2024-07-01 a 2026-01-01",
+    "escala_MASE": 3243.8,
+    "hiperparametros": {
+      "ridge": {
+        "alpha": 10
+      },
+      "random_forest": {
+        "max_depth": 3,
+        "min_samples_leaf": 3,
+        "n_estimators": 300
+      },
+      "gradient_boosting": {
+        "learning_rate": 0.03,
+        "max_depth": 2,
+        "n_estimators": 100
+      }
+    },
+    "metricas": {
+      "ingenuo": {
+        "MAE": 2377.6,
+        "MAPE": 8.28,
+        "MASE": 0.733,
+        "sesgo": 345.4,
+        "MAPE_por_operadora": {
+          "BITEL": 14.11,
+          "CLARO": 7.3,
+          "ENTEL": 5.28,
+          "MOVISTAR": 6.44
+        }
+      },
+      "ingenuo_estacional": {
+        "MAE": 3325.9,
+        "MAPE": 12.01,
+        "MASE": 1.025,
+        "sesgo": 59.0,
+        "MAPE_por_operadora": {
+          "BITEL": 26.92,
+          "CLARO": 7.84,
+          "ENTEL": 5.44,
+          "MOVISTAR": 7.85
+        }
+      },
+      "ridge": {
+        "MAE": 2642.9,
+        "MAPE": 9.29,
+        "MASE": 0.815,
+        "sesgo": 1216.5,
+        "MAPE_por_operadora": {
+          "BITEL": 14.69,
+          "CLARO": 7.67,
+          "ENTEL": 6.02,
+          "MOVISTAR": 8.77
+        }
+      },
+      "random_forest": {
+        "MAE": 2192.7,
+        "MAPE": 7.76,
+        "MASE": 0.676,
+        "sesgo": 349.5,
+        "MAPE_por_operadora": {
+          "BITEL": 14.73,
+          "CLARO": 6.41,
+          "ENTEL": 4.13,
+          "MOVISTAR": 5.78
+        }
+      },
+      "gradient_boosting": {
+        "MAE": 2182.2,
+        "MAPE": 7.67,
+        "MASE": 0.673,
+        "sesgo": 534.2,
+        "MAPE_por_operadora": {
+          "BITEL": 13.64,
+          "CLARO": 6.64,
+          "ENTEL": 4.03,
+          "MOVISTAR": 6.38
+        }
+      }
+    },
+    "importancias_gb": {
+      "var_estacional": 0.547,
+      "var_lag3": 0.195,
+      "mes": 0.088,
+      "nivel_vs_media12": 0.086,
+      "var_lag4": 0.073,
+      "var_lag5": 0.012,
+      "covid": 0.0
+    },
+    "MAE_prueba_por_operadora": {
+      "BITEL": 2878.9,
+      "CLARO": 2892.9,
+      "ENTEL": 1206.5,
+      "MOVISTAR": 1750.6
+    }
+  }
+}
