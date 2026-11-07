@@ -1,0 +1,8 @@
+{
+  "factor": 10,
+  "filas_entrada": 2760080,
+  "tiempo_silver_s": 48.7,
+  "tiempo_gold_s": 5.2,
+  "tiempo_total_s": 53.9,
+  "mb_en_disco": 8.6
+}

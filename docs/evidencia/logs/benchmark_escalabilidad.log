@@ -1,0 +1,11 @@
+
+[ESCALABILIDAD] factor 1× → log en /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/x1.log
+[ESCALABILIDAD] 1×: completado · 42.3 s · RAM pico 4609 MB · swap pico 0 MB
+
+[ESCALABILIDAD] factor 10× → log en /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/x10.log
+[ESCALABILIDAD] 10×: completado · 72.6 s · RAM pico 4718 MB · swap pico 0 MB
+
+[ESCALABILIDAD] factor 100× → log en /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/x100.log
+[ESCALABILIDAD] 100×: completado · 389.0 s · RAM pico 6047 MB · swap pico 143 MB
+
+[ESCALABILIDAD] factor 150× → log en /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/x150.log
