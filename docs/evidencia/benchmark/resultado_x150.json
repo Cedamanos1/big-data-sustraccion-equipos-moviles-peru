@@ -1,8 +1,8 @@
 {
   "factor": 150,
   "filas_entrada": 41401200,
-  "tiempo_silver_s": 446.5,
-  "tiempo_gold_s": 14.4,
-  "tiempo_total_s": 460.9,
+  "tiempo_silver_s": 415.8,
+  "tiempo_gold_s": 12.7,
+  "tiempo_total_s": 428.5,
   "mb_en_disco": 93.3
 }
