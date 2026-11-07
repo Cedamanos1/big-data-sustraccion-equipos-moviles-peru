@@ -1,0 +1,18 @@
+# datos: se descargan de la fuente oficial (ver README §2)
+data/raw/**
+!data/raw/**/.gitkeep
+data/staging/
+data/lake/
+**/_benchmark/
+# secretos y entornos
+.secrets/
+*.key
+.env
+venv/
+# artefactos de Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+spark-warehouse/
+metastore_db/
+derby.log
