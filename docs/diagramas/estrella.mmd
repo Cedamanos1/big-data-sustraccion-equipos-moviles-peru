@@ -1,0 +1,51 @@
+erDiagram
+  DIM_TIEMPO ||--o{ FACT_OPERADORA_MES : "fecha_mes"
+  DIM_OPERADORA ||--o{ FACT_OPERADORA_MES : "operadora_id"
+  DIM_OPERADORA ||--o{ FACT_RECLAMOS_DEPTO : "operadora_id"
+  DIM_DEPARTAMENTO ||--o{ FACT_RECLAMOS_DEPTO : "departamento_id"
+  DIM_TIEMPO ||--o{ FACT_RECLAMOS_DEPTO : "fecha_mes"
+  DIM_DEPARTAMENTO ||--o{ FACT_COBERTURA_DEPTO : "departamento_id"
+  DIM_OPERADORA ||--o{ FACT_COBERTURA_DEPTO : "operadora_id"
+  FACT_OPERADORA_MES {
+    date fecha_mes FK
+    string operadora_id FK
+    long sustraidos
+    long perdidos
+    long recuperados
+    long reclamos_moviles
+    double tasa_recuperacion_pct
+    double pronostico_sustraidos
+  }
+  FACT_RECLAMOS_DEPTO {
+    date fecha_mes FK
+    string operadora_id FK
+    string departamento_id FK
+    long reclamos_moviles
+    long reclamos_calidad
+  }
+  FACT_COBERTURA_DEPTO {
+    string periodo
+    string operadora_id FK
+    string departamento_id FK
+    long ccpp
+    long ccpp_4g
+    long estaciones_4g
+  }
+  DIM_TIEMPO {
+    date fecha_mes PK
+    int anio
+    int mes
+    int trimestre
+    boolean periodo_covid
+  }
+  DIM_OPERADORA {
+    string operadora_id PK
+    string razon_social_vigente
+    string razones_sociales_historicas
+    string tipo
+  }
+  DIM_DEPARTAMENTO {
+    string departamento_id PK
+    string nombre
+    string ubigeo_dpto
+  }

@@ -1,0 +1,32 @@
+flowchart TB
+  subgraph F["1 · Fuentes institucionales (lote)"]
+    direction LR
+    A1["F1 Equipos sustraídos,<br/>perdidos y recuperados<br/>XLSX · OSIPTEL"]
+    A2["F2 Reclamos presentados<br/>XLSX · OSIPTEL"]
+    A3["F3 Cobertura móvil<br/>CSV · OSIPTEL"]
+    A4["F4 Históricos 2012-2015<br/>ZIP · MTC/OSIPTEL<br/>(solo escalabilidad)"]
+    A1 ~~~ A2 ~~~ A3 ~~~ A4
+  end
+  R["2 · RAW (HDFS o disco local)<br/>originales inmutables + manifiesto SHA-256"]
+  subgraph P["3 · Procesamiento · Apache Spark 3.5.1 (PySpark)"]
+    direction LR
+    I["ingesta.py<br/>lectura y esquema"] --> T["transform.py<br/>normalización y<br/>reglas de calidad"] --> J["gold.py<br/>JOIN y agregados"]
+  end
+  subgraph Z["4 · Zonas procesadas · Parquet + Snappy"]
+    direction LR
+    S["SILVER<br/>datos limpios"]
+    Q["QUARANTINE<br/>rechazos + motivo"]
+    G["GOLD<br/>hechos y dimensiones"]
+    S ~~~ Q ~~~ G
+  end
+  subgraph C["5 · Consumo"]
+    direction LR
+    M["modelo.py<br/>pronóstico (scikit-learn)"]
+    D["Tablero RENTESEG<br/>4 indicadores"]
+  end
+  F --> R --> P
+  T --> S
+  T --> Q
+  J --> G
+  G --> M --> D
+  G --> D
