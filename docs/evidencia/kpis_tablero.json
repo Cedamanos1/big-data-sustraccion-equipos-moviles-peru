@@ -1,0 +1,12 @@
+{
+  "corte": "2026-01-01",
+  "sustraidos_mes_u12": 121379.33333333333,
+  "var_interanual": -6.25075627482834,
+  "recuperacion_u12": 7.594510872251729,
+  "recuperacion_u12_operadora": {
+    "MOVISTAR": 5.03,
+    "ENTEL": 6.41,
+    "CLARO": 8.89,
+    "BITEL": 9.8
+  }
+}
