@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero RENTESEG</title>
+<meta name="description" content="Sustracción y recuperación de equipos móviles por operadora: indicadores, prioridades de supervisión y pronóstico. Datos abiertos de OSIPTEL.">
+<style>
+:root{
+  --bg:#f4f3ef; --surface:#ffffff; --surface-2:#f9f9f7; --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#7a7a75;
+  --line:#e4e3df; --grid:#ecebe7; --accent:#1f3a5f;
+  --bitel:#2a78d6; --claro:#eb6834; --entel:#1baf7a; --movistar:#eda100;
+  --crit:#d03b3b; --warn:#b77a00; --good:#0c8a0c; --crit-bg:#fbeaea; --warn-bg:#fdf3dc; --good-bg:#e7f5e7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121211; --surface:#1a1a19; --surface-2:#222220; --ink:#f0efec; --ink-2:#c3c2b7; --ink-3:#8f8e86;
+    --line:#383835; --grid:#2a2a28; --accent:#8fb3e8;
+    --bitel:#3987e5; --claro:#d95926; --entel:#199e70; --movistar:#c98500;
+    --crit:#e66767; --warn:#e0a531; --good:#3cbf3c; --crit-bg:#3a1f1f; --warn-bg:#3a3020; --good-bg:#1d331d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121211; --surface:#1a1a19; --surface-2:#222220; --ink:#f0efec; --ink-2:#c3c2b7; --ink-3:#8f8e86;
+  --line:#383835; --grid:#2a2a28; --accent:#8fb3e8;
+  --bitel:#3987e5; --claro:#d95926; --entel:#199e70; --movistar:#c98500;
+  --crit:#e66767; --warn:#e0a531; --good:#3cbf3c; --crit-bg:#3a1f1f; --warn-bg:#3a3020; --good-bg:#1d331d;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 16px 48px}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+h1{font-size:24px;line-height:1.2;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:14px}
+.meta{color:var(--ink-3);font-size:13px;text-align:right}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid>*{min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.kpi .lbl{color:var(--ink-2);font-size:13px}
+.kpi .val{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .ctx{color:var(--ink-3);font-size:12.5px}
+h2{font-size:17px;margin:0 0 2px}
+.q{color:var(--ink-2);font-size:13.5px;margin:0 0 12px}
+section{margin-top:16px}
+.two{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th{text-align:left;color:var(--ink-2);font-weight:600;font-size:12.5px;padding:8px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--grid);vertical-align:middle}
+td.n,th.n{text-align:right}
+.dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:-1px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:2px 9px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.b-crit{background:var(--crit-bg);color:var(--crit)} .b-warn{background:var(--warn-bg);color:var(--warn)} .b-good{background:var(--good-bg);color:var(--good)}
+.bar{position:relative;height:8px;background:var(--grid);border-radius:4px;min-width:80px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.bar b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink-2)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.chip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="false"]{opacity:.45}
+.chip:focus-visible,.seg button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-left:auto}
+.seg button{border:0;background:var(--surface-2);color:var(--ink-2);font:inherit;font-size:13px;padding:4px 10px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+select{font:inherit;font-size:13px;padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink)}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;box-shadow:0 4px 14px rgba(0,0,0,.12);min-width:150px;opacity:0;transition:opacity .08s;z-index:5}
+.tip .t{font-weight:600;margin-bottom:4px}
+.tip .r{display:flex;justify-content:space-between;gap:12px}
+.note{color:var(--ink-3);font-size:12.5px;margin-top:8px}
+.reco{border-left:3px solid var(--accent);padding:2px 0 2px 12px;margin:10px 0;color:var(--ink)}
+.reco strong{display:block}
+footer{margin-top:28px;color:var(--ink-3);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+footer code{font-size:12px}
+.theme{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;padding:4px 10px;font:inherit;font-size:12.5px;cursor:pointer;margin-top:6px}
+.tablewrap{overflow-x:auto}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:minmax(0,1fr)}.meta{text-align:left}}
+@media (max-width:480px){.kpi .val{font-size:24px}.seg{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Tablero RENTESEG · Sustracción y recuperación de equipos móviles</h1>
+    <div class="sub">Prioridades de supervisión por operadora y pronóstico del mes siguiente · datos abiertos de OSIPTEL</div>
+  </div>
+  <div class="meta"><div id="corte"></div><button class="theme" id="theme" type="button">Cambiar tema</button></div>
+</header>
+
+<div class="grid kpis" id="kpis"></div>
+
+<section class="card">
+  <h2>¿A qué operadora priorizar en la supervisión de la recuperación?</h2>
+  <p class="q">Recuperados por cada 100 sustraídos en los últimos 12 meses frente a la mediana del mercado (línea vertical). «Potencial» = equipos adicionales que se recuperarían al año si la operadora alcanzara la mediana.</p>
+  <div class="tablewrap"><table id="prio"></table></div>
+  <div id="recos"></div>
+</section>
+
+<div class="grid two">
+<section class="card">
+  <h2>¿Cómo evolucionan las sustracciones?</h2>
+  <p class="q">Equipos reportados como sustraídos por mes; el último punto punteado es el pronóstico.</p>
+  <div class="controls" id="ctl1"></div>
+  <div class="chart" id="c1"></div>
+</section>
+<section class="card">
+  <h2>¿Mejora la recuperación?</h2>
+  <p class="q">Recuperados por cada 100 sustraídos, por año.</p>
+  <div class="chart" id="c2"></div>
+  <p class="note">Solo años completos; los meses de <span class="corteTxt"></span> se reflejan en la tabla de prioridades (últimos 12 meses).</p>
+</section>
+</div>
+
+<div class="grid two">
+<section class="card">
+  <h2>¿Qué tan confiable es el pronóstico?</h2>
+  <p class="q">Periodo de prueba no usado para entrenar: lo observado frente al modelo y frente a repetir el mes anterior.</p>
+  <div class="controls"><label for="opSel" class="q" style="margin:0">Operadora</label><select id="opSel"></select><span class="q" id="errOp" style="margin:0 0 0 auto"></span></div>
+  <div class="chart" id="c3"></div>
+</section>
+<section class="card">
+  <h2>Reclamos móviles por departamento</h2>
+  <p class="q">Marzo 2023 (único periodo con cobertura publicada). Los reclamos se ubican donde se presentaron, no donde ocurrió un robo.</p>
+  <div class="tablewrap" style="max-height:360px;overflow-y:auto"><table id="dep"></table></div>
+</section>
+</div>
+
+<footer>
+  <div><strong>Fuentes:</strong> OSIPTEL, Plataforma Nacional de Datos Abiertos: «Número de equipos móviles reportados como sustraídos, perdidos y recuperados», «Reclamos presentados» y «Cobertura de servicio móvil por empresa operadora» (licencia ODC-By). Proyecto académico del Grupo 11, Big Data y Analítica de Datos, UPAO 2026-20; no representa una posición de OSIPTEL.</div>
+  <div style="margin-top:6px"><strong>Cómo se actualiza:</strong> descargar los archivos nuevos en <code>data/raw/</code> y ejecutar <code>python src/pipeline.py</code> y <code>python src/tablero.py</code>. <strong>Limitaciones:</strong> sin líneas en servicio por operadora no se comparan riesgos; «recuperado» no implica que sea el mismo equipo sustraído ese mes.</div>
+  <div id="gen" style="margin-top:6px"></div>
+</footer>
+</div>
+
+<script>
+const D = /*__DATOS__*/null;
+const OPS = ["BITEL","CLARO","ENTEL","MOVISTAR"];
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const COL = op => css("--"+op.toLowerCase());
+const nf = n => n==null ? "—" : Math.round(n).toLocaleString("es-PE").replace(/,/g," ");
+const pf = (n,d=1) => n==null ? "—" : n.toFixed(d).replace(".",".");
+const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const mlab = m => { const [y,mm]=m.split("-"); return MES[+mm-1]+"-"+y; };
+const el = (t,a={},h="") => { const e=document.createElement(t); for(const k in a) e.setAttribute(k,a[k]); e.innerHTML=h; return e; };
+const SVGNS="http://www.w3.org/2000/svg";
+const sv = (t,a={}) => { const e=document.createElementNS(SVGNS,t); for(const k in a) e.setAttribute(k,a[k]); return e; };
+
+/* ---------- cabecera y KPI ---------- */
+document.getElementById("corte").textContent = "Datos hasta " + mlab(D.corte) + " · pronóstico " + mlab(D.mes_pronostico);
+document.querySelectorAll(".corteTxt").forEach(x=>x.textContent=mlab(D.corte));
+document.getElementById("gen").textContent = "Generado el " + D.generado + " por src/tablero.py a partir de la capa GOLD.";
+const K = D.kpi;
+const kpis = [
+  ["Sustraídos por mes (últimos 12 meses)", nf(K.sus_mes), (K.var_anual>0?"+":"")+pf(K.var_anual)+" % frente a los 12 meses previos"],
+  ["Recuperados por cada 100 sustraídos", pf(K.tasa,1), "Mediana de las operadoras: "+pf(K.mediana,1)],
+  ["Equipos adicionales recuperables al año", nf(K.potencial_total), "Si las operadoras bajo la mediana la alcanzaran"],
+  ["Pronóstico de sustraídos, "+mlab(D.mes_pronostico), nf(K.pron_total), "Error típico del modelo: "+pf(K.mape,1)+" % (vs "+pf(K.mape_ing,1)+" % sin modelo)"],
+];
+const kc = document.getElementById("kpis");
+kpis.forEach(([l,v,c]) => kc.appendChild(el("div",{class:"card kpi"},`<div class="lbl">${l}</div><div class="val">${v}</div><div class="ctx">${c}</div>`)));
+
+/* ---------- prioridades ---------- */
+function renderPrio(){
+  const ops=[...D.operadoras].sort((a,b)=>b.brecha_vs_mediana-a.brecha_vs_mediana);
+  const mx=Math.max(...ops.map(o=>o.tasa12))*1.15;
+  const cls={"Prioritaria":"b-crit","En seguimiento":"b-warn","Sobre la mediana":"b-good"};
+  const ico={"Prioritaria":"▲","En seguimiento":"●","Sobre la mediana":"✓"};
+  let h=`<thead><tr><th>Operadora</th><th>Estado</th><th class="n">Recuperados por 100</th><th style="min-width:120px"></th><th class="n">Potencial / año</th><th class="n">Sustraídos 12 m</th><th class="n">Var. anual</th><th class="n">Pronóstico ${mlab(D.mes_pronostico)}</th></tr></thead><tbody>`;
+  ops.forEach(o=>{
+    h+=`<tr><td><span class="dot" style="background:${COL(o.op)}"></span>${o.op}</td>
+    <td><span class="badge ${cls[o.estado]}">${ico[o.estado]} ${o.estado}</span></td>
+    <td class="n"><strong>${pf(o.tasa12,1)}</strong></td>
+    <td><div class="bar" title="Mediana ${pf(K.mediana,1)}"><i style="width:${100*o.tasa12/mx}%;background:${COL(o.op)}"></i><b style="left:${100*K.mediana/mx}%"></b></div></td>
+    <td class="n">${o.potencial?("+"+nf(o.potencial)):"—"}</td>
+    <td class="n">${nf(o.sus12)}</td><td class="n">${(o.var_anual>0?"+":"")+pf(o.var_anual)} %</td>
+    <td class="n">${nf(o.pron)} <span style="color:var(--ink-3)">± ${nf(o.pron_mae)}</span></td></tr>`;
+  });
+  document.getElementById("prio").innerHTML=h+"</tbody>";
+  const pri=ops.filter(o=>o.estado==="Prioritaria");
+  let r="";
+  if(pri.length) r+=`<div class="reco"><strong>Decisión sugerida (DFI · trimestral)</strong>Solicitar a ${pri.map(o=>o.op).join(" y ")} un diagnóstico de su proceso de registro, bloqueo y reporte de equipos recuperados, con seguimiento en este tablero. Potencial: +${nf(pri.reduce((s,o)=>s+o.potencial,0))} equipos recuperados al año. Antes de sancionar, descartar que la diferencia sea solo de reporte.</div>`;
+  r+=`<div class="reco"><strong>Planificación del mes (DFI · mensual)</strong>Dimensionar la fiscalización de ${mlab(D.mes_pronostico)} para unos ${nf(K.pron_total)} equipos sustraídos (pronóstico más un margen de ± error por operadora).</div>`;
+  document.getElementById("recos").innerHTML=r;
+}
+
+/* ---------- gráfico de líneas genérico con tooltip ---------- */
+function lineChart(host, {labels, series, yfmt=nf, h=300, ymin=null, xfmt=mlab, xTicks=null}){
+  host.innerHTML=""; const W=host.clientWidth||600, H=h, m={l:52,r:14,t:10,b:28};
+  const iw=W-m.l-m.r, ih=H-m.t-m.b;
+  const vals=series.flatMap(s=>s.values.filter(v=>v!=null));
+  let lo= ymin!=null?ymin:Math.min(...vals), hi=Math.max(...vals); if(ymin==null) lo=Math.max(0,lo-(hi-lo)*.1); hi=hi+(hi-lo)*.08;
+  const step=niceStep((hi-lo)/4); lo=Math.floor(lo/step)*step; hi=Math.ceil(hi/step)*step;
+  const x=i=>m.l+(labels.length<2?iw/2:i*iw/(labels.length-1)), y=v=>m.t+ih-(v-lo)/(hi-lo)*ih;
+  const s=sv("svg",{viewBox:`0 0 ${W} ${H}`,role:"img"});
+  for(let v=lo; v<=hi+1e-9; v+=step){ s.appendChild(sv("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:css("--grid")}));
+    const t=sv("text",{x:m.l-8,y:y(v)+4,"text-anchor":"end","font-size":11,fill:css("--ink-3")}); t.textContent=yfmt(v); s.appendChild(t); }
+  const ticks = xTicks || labels.map((l,i)=>i).filter(i=>labels[i].endsWith("-01"));
+  ticks.forEach(i=>{ const t=sv("text",{x:x(i),y:H-8,"text-anchor":"middle","font-size":11,fill:css("--ink-3")}); t.textContent=labels[i].slice(0,4)===labels[i]?labels[i]:(labels.length>40?labels[i].slice(0,4):xfmt(labels[i])); s.appendChild(t); });
+  series.forEach(se=>{ let d="",pen=false; se.values.forEach((v,i)=>{ if(v==null){pen=false;return;} d+=(pen?"L":"M")+x(i).toFixed(1)+","+y(v).toFixed(1); pen=true; });
+    s.appendChild(sv("path",{d,fill:"none",stroke:se.color,"stroke-width":se.w||2,"stroke-dasharray":se.dash||"","stroke-linejoin":"round","stroke-linecap":"round"}));
+    (se.points||[]).forEach(i=>{ if(se.values[i]!=null) s.appendChild(sv("circle",{cx:x(i),cy:y(se.values[i]),r:4.5,fill:css("--surface"),stroke:se.color,"stroke-width":2})); }); });
+  const cross=sv("line",{y1:m.t,y2:m.t+ih,stroke:css("--ink-3"),"stroke-dasharray":"3 3",opacity:0}); s.appendChild(cross);
+  const ov=sv("rect",{x:m.l,y:m.t,width:iw,height:ih,fill:"transparent"}); s.appendChild(ov);
+  host.appendChild(s); const tip=el("div",{class:"tip"}); host.appendChild(tip);
+  const move=ev=>{ const r=s.getBoundingClientRect(), px=(ev.clientX-r.left)*W/r.width;
+    const i=Math.max(0,Math.min(labels.length-1,Math.round((px-m.l)/iw*(labels.length-1))));
+    cross.setAttribute("x1",x(i)); cross.setAttribute("x2",x(i)); cross.setAttribute("opacity",1);
+    let h=`<div class="t">${xfmt(labels[i])}</div>`;
+    series.filter(se=>se.values[i]!=null&&!se.noTip).forEach(se=>h+=`<div class="r"><span><span class="dot" style="background:${se.color}"></span>${se.name}</span><strong>${yfmt(se.values[i])}</strong></div>`);
+    tip.innerHTML=h; tip.style.opacity=1; const tx=x(i)*r.width/W; tip.style.left=Math.min(r.width-170,Math.max(0,tx+12))+"px"; tip.style.top="8px"; };
+  ov.addEventListener("pointermove",move); ov.addEventListener("pointerleave",()=>{tip.style.opacity=0;cross.setAttribute("opacity",0);});
+}
+function niceStep(r){ const p=Math.pow(10,Math.floor(Math.log10(r||1))), f=r/p; return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p; }
+
+/* ---------- gráfico 1: serie por operadora + pronóstico ---------- */
+const st={ops:new Set(OPS), desde:"2022"};
+function renderC1(){
+  const meses=[...new Set(D.serie.map(r=>r.m))].filter(m=>m.slice(0,4)>=st.desde).sort();
+  const labels=[...meses, D.mes_pronostico];
+  const series=[];
+  OPS.filter(o=>st.ops.has(o)).forEach(op=>{
+    const map=Object.fromEntries(D.serie.filter(r=>r.op===op).map(r=>[r.m,r.sus]));
+    const o=D.operadoras.find(x=>x.op===op);
+    series.push({name:op,color:COL(op),values:labels.map(m=>map[m]??null)});
+    series.push({name:op+" (pronóstico)",color:COL(op),dash:"4 4",values:labels.map((m,i)=>i>=labels.length-2?(i===labels.length-1?o.pron:map[m]):null),points:[labels.length-1]});
+  });
+  const yr=meses.length>40;
+  lineChart(document.getElementById("c1"),{labels,series,yfmt:v=>v>=1000?Math.round(v/1000)+" k":nf(v),
+    xTicks: labels.map((l,i)=>i).filter(i=> yr ? labels[i].endsWith("-01") : (labels[i].endsWith("-01")||labels[i].endsWith("-07")||i===labels.length-1)),
+    xfmt:mlab});
+}
+function renderCtl1(){
+  const c=document.getElementById("ctl1"); c.innerHTML="";
+  OPS.forEach(op=>{ const b=el("button",{class:"chip",type:"button","aria-pressed":st.ops.has(op)},`<span class="dot" style="background:${COL(op)};margin:0"></span>${op}`);
+    b.onclick=()=>{ if(st.ops.has(op)&&st.ops.size>1) st.ops.delete(op); else st.ops.add(op); renderCtl1(); renderC1(); }; c.appendChild(b); });
+  const seg=el("div",{class:"seg",role:"group","aria-label":"Periodo"});
+  [["2017","Desde 2017"],["2022","Desde 2022"],["2024","Últimos 2 años"]].forEach(([v,t])=>{ const b=el("button",{type:"button","aria-pressed":st.desde===v},t); b.onclick=()=>{st.desde=v;renderCtl1();renderC1();}; seg.appendChild(b); });
+  c.appendChild(seg);
+}
+
+/* ---------- gráfico 2: tasa anual ---------- */
+function renderC2(){
+  // solo años completos (12 meses) para no comparar un año parcial con años enteros
+  const anios=[...new Set(D.serie.map(r=>r.m.slice(0,4)))].sort().filter(a=>new Set(D.serie.filter(r=>r.m.startsWith(a)).map(r=>r.m)).size===12);
+  const series=OPS.map(op=>({name:op,color:COL(op),points:anios.map((_,i)=>i),values:anios.map(a=>{
+    const rs=D.serie.filter(r=>r.op===op&&r.m.startsWith(a)&&r.rec!=null); const s=rs.reduce((t,r)=>t+r.sus,0), rc=rs.reduce((t,r)=>t+r.rec,0);
+    return s?100*rc/s:null; })}));
+  lineChart(document.getElementById("c2"),{labels:anios,series,yfmt:v=>v.toFixed(Number.isInteger(v)?0:1),ymin:0,xTicks:anios.map((_,i)=>i),xfmt:a=>a,h:300});
+}
+
+/* ---------- gráfico 3: prueba del modelo ---------- */
+const sel=document.getElementById("opSel"); OPS.forEach(o=>sel.appendChild(el("option",{value:o},o)));
+function renderC3(){
+  const op=sel.value, rs=D.prueba.filter(r=>r.op===op), labels=rs.map(r=>r.m);
+  const mae=a=>rs.reduce((s,r)=>s+Math.abs(r.real-r[a]),0)/rs.length;
+  document.getElementById("errOp").textContent=`Error medio: modelo ${nf(mae("gb"))} · sin modelo ${nf(mae("ing"))}`;
+  lineChart(document.getElementById("c3"),{labels,h:260,yfmt:v=>v>=1000?(v/1000).toFixed(0)+" k":nf(v),
+    xTicks:labels.map((l,i)=>i).filter(i=>/-(01|07)$/.test(labels[i])),
+    series:[{name:"Observado",color:css("--ink"),values:rs.map(r=>r.real)},
+            {name:"Modelo",color:COL(op),values:rs.map(r=>r.gb),w:2.4},
+            {name:"Mes anterior",color:css("--ink-3"),dash:"5 4",w:1.5,values:rs.map(r=>r.ing)}]});
+}
+sel.onchange=renderC3;
+
+/* ---------- tabla departamentos ---------- */
+const dst={k:"recl",desc:true};
+function renderDep(){
+  const cols=[["d","Departamento",false],["recl","Reclamos móviles",true],["pct_cal","% calidad o falta de servicio",true],["pct4g","% centros poblados con 4G",true]];
+  const rows=[...D.deptos].sort((a,b)=>{const x=a[dst.k],y=b[dst.k]; return (x>y?1:x<y?-1:0)*(dst.desc?-1:1);});
+  const tot=D.deptos.reduce((s,r)=>s+r.recl,0);
+  let h="<thead><tr>"+cols.map(([k,t,n])=>`<th class="${n?"n":""}" style="cursor:pointer" data-k="${k}" aria-sort="${dst.k===k?(dst.desc?"descending":"ascending"):"none"}">${t}${dst.k===k?(dst.desc?" ↓":" ↑"):""}</th>`).join("")+"</tr></thead><tbody>";
+  rows.forEach(r=>h+=`<tr><td>${r.d}</td><td class="n">${nf(r.recl)} <span style="color:var(--ink-3)">(${pf(100*r.recl/tot)} %)</span></td><td class="n">${pf(r.pct_cal)}</td><td class="n">${r.pct4g==null?"—":pf(r.pct4g)}</td></tr>`);
+  const t=document.getElementById("dep"); t.innerHTML=h+"</tbody>";
+  t.querySelectorAll("th").forEach(th=>th.onclick=()=>{ const k=th.dataset.k; dst.desc = dst.k===k ? !dst.desc : true; dst.k=k; renderDep(); });
+}
+
+/* ---------- tema ---------- */
+document.getElementById("theme").onclick=()=>{ const r=document.documentElement;
+  const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  r.dataset.theme = dark?"light":"dark"; try{localStorage.setItem("tema",r.dataset.theme);}catch(e){} renderAll(); };
+try{ const t=localStorage.getItem("tema"); if(t) document.documentElement.dataset.theme=t; }catch(e){}
+
+function renderAll(){ renderPrio(); renderCtl1(); renderC1(); renderC2(); renderC3(); renderDep(); }
+renderAll();
+let rt; addEventListener("resize",()=>{clearTimeout(rt); rt=setTimeout(()=>{renderC1();renderC2();renderC3();},150);});
+</script>
+</body>
+</html>
