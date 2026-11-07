@@ -1,7 +1,7 @@
 """Figuras de rendimiento para el informe (§3.6 y §3.7), a partir de docs/evidencia/.
 
     python src/graficar_benchmark.py
-Genera docs/figuras/fig9_optimizacion.png y docs/figuras/fig10_escalabilidad.png.
+Genera docs/figuras/fig9_optimizacion.png, fig10_escalabilidad.png y fig11_pandas_vs_spark.png.
 """
 import csv, json
 from pathlib import Path
@@ -71,6 +71,33 @@ def fig_escalabilidad():
     print("OK fig10_escalabilidad.png")
 
 
+def fig_pandas_vs_spark():
+    ps, pp = EVID / "escalabilidad.json", EVID / "escalabilidad_pandas.json"
+    if not (ps.exists() and pp.exists()):
+        print("Faltan escalabilidad.json o escalabilidad_pandas.json"); return
+    s = [f for f in json.loads(ps.read_text(encoding="utf-8"))["factores"] if f["estado"] == "completado"]
+    pd_ = json.loads(pp.read_text(encoding="utf-8"))
+    ok = [f for f in pd_["factores"] if f["estado"] == "completado"]; mal = [f for f in pd_["factores"] if f["estado"] != "completado"]
+    lim = pd_["limite_memoria_proceso_mb"]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(9.5, 3.6))
+    a1.plot([f["factor"] for f in ok], [f["rss_pico_mb"] for f in ok], "-o", color=NARANJA, label="pandas (todo en memoria)")
+    a1.plot([f["factor"] for f in s], [f["rss_proceso_pico_mb"] for f in s], "-o", color=AZUL, label="Spark (por particiones)")
+    for f in mal:
+        a1.plot([f["factor"]], [f["rss_pico_mb"]], "x", color=ROJO, ms=10, mew=2)
+        a1.annotate("MemoryError", (f["factor"], f["rss_pico_mb"]), xytext=(6, -14), textcoords="offset points", fontsize=8.5, color=ROJO)
+    a1.axhline(lim, color=TINTA, lw=1, ls="--"); a1.text(2, lim * 1.03, f"Límite de memoria del proceso ({lim/1000:.1f} GB)", fontsize=8.5)
+    a1.set_xscale("log"); a1.set_xlabel("Factor de réplica (escala log)"); a1.set_ylabel("MB (pico del proceso)")
+    a1.set_ylim(0, lim * 1.25); a1.set_title("Memoria: pandas crece con los datos"); a1.legend(frameon=False, fontsize=8.5, loc="center left")
+    a2.plot([f["factor"] for f in ok], [f["tiempo_total_s"] for f in ok], "-o", color=NARANJA, label="pandas")
+    a2.plot([f["factor"] for f in s], [f["tiempo_total_s"] for f in s], "-o", color=AZUL, label="Spark")
+    a2.set_xscale("log"); a2.set_yscale("log"); a2.set_xlabel("Factor de réplica (escala log)"); a2.set_ylabel("Segundos (escala log)")
+    a2.set_title("Tiempo: pandas es más rápido mientras cabe"); a2.legend(frameon=False, fontsize=8.5)
+    for a in (a1, a2):
+        a.axvspan(100, 150, color="#fbeaea", lw=0)
+    fig.tight_layout(); fig.savefig(FIG / "fig11_pandas_vs_spark.png", bbox_inches="tight"); plt.close(fig)
+    print("OK fig11_pandas_vs_spark.png")
+
+
 if __name__ == "__main__":
     FIG.mkdir(parents=True, exist_ok=True)
-    fig_optimizacion(); fig_escalabilidad()
+    fig_optimizacion(); fig_escalabilidad(); fig_pandas_vs_spark()
