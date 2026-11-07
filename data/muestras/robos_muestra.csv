@@ -1,0 +1,301 @@
+empresa,mes,anio,estado,cantidad
+América Movil Perú S.A.C.,2017-01-01 00:00:00,2017,Sustraídos,63710
+América Movil Perú S.A.C.,2017-01-01 00:00:00,2017,Recuperados,5902
+América Movil Perú S.A.C.,2017-01-01 00:00:00,2017,Perdidos,32283
+Entel Perú S.A.,2017-01-01 00:00:00,2017,Sustraídos,52146
+Entel Perú S.A.,2017-01-01 00:00:00,2017,Recuperados,4452
+Flash Servicios Perú S.R.L.,2017-01-01 00:00:00,2017,Sustraídos,106
+Flash Servicios Perú S.R.L.,2017-01-01 00:00:00,2017,Recuperados,2
+Flash Servicios Perú S.R.L.,2017-01-01 00:00:00,2017,Perdidos,12
+Telefónica del Perú S.A.A.,2017-01-01 00:00:00,2017,Sustraídos,81018
+Telefónica del Perú S.A.A.,2017-01-01 00:00:00,2017,Recuperados,5451
+Telefónica del Perú S.A.A.,2017-01-01 00:00:00,2017,Perdidos,36563
+Viettel Perú S.A.C.,2017-01-01 00:00:00,2017,Sustraídos,5264
+Viettel Perú S.A.C.,2017-01-01 00:00:00,2017,Recuperados,189
+Viettel Perú S.A.C.,2017-01-01 00:00:00,2017,Perdidos,1923
+América Movil Perú S.A.C.,2017-02-01 00:00:00,2017,Recuperados,5461
+América Movil Perú S.A.C.,2017-02-01 00:00:00,2017,Sustraídos,61650
+América Movil Perú S.A.C.,2017-02-01 00:00:00,2017,Perdidos,29327
+Entel Perú S.A.,2017-02-01 00:00:00,2017,Recuperados,4072
+Entel Perú S.A.,2017-02-01 00:00:00,2017,Sustraídos,51483
+Flash Servicios Perú S.R.L.,2017-02-01 00:00:00,2017,Recuperados,3
+Flash Servicios Perú S.R.L.,2017-02-01 00:00:00,2017,Perdidos,8
+Flash Servicios Perú S.R.L.,2017-02-01 00:00:00,2017,Sustraídos,102
+Telefónica del Perú S.A.A.,2017-02-01 00:00:00,2017,Perdidos,31353
+Telefónica del Perú S.A.A.,2017-02-01 00:00:00,2017,Recuperados,4762
+Telefónica del Perú S.A.A.,2017-02-01 00:00:00,2017,Sustraídos,74695
+Viettel Perú S.A.C.,2017-02-01 00:00:00,2017,Sustraídos,5422
+Viettel Perú S.A.C.,2017-02-01 00:00:00,2017,Recuperados,206
+Viettel Perú S.A.C.,2017-02-01 00:00:00,2017,Perdidos,1847
+América Movil Perú S.A.C.,2017-03-01 00:00:00,2017,Sustraídos,65506
+América Movil Perú S.A.C.,2017-03-01 00:00:00,2017,Perdidos,30347
+América Movil Perú S.A.C.,2017-03-01 00:00:00,2017,Recuperados,5655
+Entel Perú S.A.,2017-03-01 00:00:00,2017,Perdidos,1
+Entel Perú S.A.,2017-03-01 00:00:00,2017,Recuperados,3752
+Entel Perú S.A.,2017-03-01 00:00:00,2017,Sustraídos,50709
+Flash Servicios Perú S.R.L.,2017-03-01 00:00:00,2017,Recuperados,6
+Flash Servicios Perú S.R.L.,2017-03-01 00:00:00,2017,Sustraídos,101
+Flash Servicios Perú S.R.L.,2017-03-01 00:00:00,2017,Perdidos,7
+Telefónica del Perú S.A.A.,2017-03-01 00:00:00,2017,Recuperados,4815
+Telefónica del Perú S.A.A.,2017-03-01 00:00:00,2017,Perdidos,30424
+Telefónica del Perú S.A.A.,2017-03-01 00:00:00,2017,Sustraídos,75495
+Viettel Perú S.A.C.,2017-03-01 00:00:00,2017,Perdidos,2160
+Viettel Perú S.A.C.,2017-03-01 00:00:00,2017,Sustraídos,5678
+Viettel Perú S.A.C.,2017-03-01 00:00:00,2017,Recuperados,164
+América Movil Perú S.A.C.,2017-04-01 00:00:00,2017,Sustraídos,62257
+América Movil Perú S.A.C.,2017-04-01 00:00:00,2017,Recuperados,5149
+América Movil Perú S.A.C.,2017-04-01 00:00:00,2017,Perdidos,28130
+Entel Perú S.A.,2017-04-01 00:00:00,2017,Sustraídos,46497
+Entel Perú S.A.,2017-04-01 00:00:00,2017,Recuperados,2816
+Flash Servicios Perú S.R.L.,2017-04-01 00:00:00,2017,Perdidos,9
+Flash Servicios Perú S.R.L.,2017-04-01 00:00:00,2017,Recuperados,3
+Flash Servicios Perú S.R.L.,2017-04-01 00:00:00,2017,Sustraídos,99
+Telefónica del Perú S.A.A.,2017-04-01 00:00:00,2017,Recuperados,3889
+Telefónica del Perú S.A.A.,2017-04-01 00:00:00,2017,Perdidos,27660
+Telefónica del Perú S.A.A.,2017-04-01 00:00:00,2017,Sustraídos,71707
+Viettel Perú S.A.C.,2017-04-01 00:00:00,2017,Recuperados,160
+Viettel Perú S.A.C.,2017-04-01 00:00:00,2017,Sustraídos,13814
+Viettel Perú S.A.C.,2017-04-01 00:00:00,2017,Perdidos,2236
+América Movil Perú S.A.C.,2017-05-01 00:00:00,2017,Perdidos,29626
+América Movil Perú S.A.C.,2017-05-01 00:00:00,2017,Recuperados,5755
+América Movil Perú S.A.C.,2017-05-01 00:00:00,2017,Sustraídos,66488
+Entel Perú S.A.,2017-05-01 00:00:00,2017,Perdidos,1
+Entel Perú S.A.,2017-05-01 00:00:00,2017,Sustraídos,49914
+Entel Perú S.A.,2017-05-01 00:00:00,2017,Recuperados,3288
+Flash Servicios Perú S.R.L.,2017-05-01 00:00:00,2017,Perdidos,5
+Flash Servicios Perú S.R.L.,2017-05-01 00:00:00,2017,Sustraídos,74
+Telefónica del Perú S.A.A.,2017-05-01 00:00:00,2017,Recuperados,5558
+Telefónica del Perú S.A.A.,2017-05-01 00:00:00,2017,Perdidos,27624
+Telefónica del Perú S.A.A.,2017-05-01 00:00:00,2017,Sustraídos,75376
+Viettel Perú S.A.C.,2017-05-01 00:00:00,2017,Recuperados,279
+Viettel Perú S.A.C.,2017-05-01 00:00:00,2017,Sustraídos,7188
+Viettel Perú S.A.C.,2017-05-01 00:00:00,2017,Perdidos,2373
+América Movil Perú S.A.C.,2017-06-01 00:00:00,2017,Sustraídos,60160
+América Movil Perú S.A.C.,2017-06-01 00:00:00,2017,Perdidos,27756
+América Movil Perú S.A.C.,2017-06-01 00:00:00,2017,Recuperados,5719
+Entel Perú S.A.,2017-06-01 00:00:00,2017,Sustraídos,50770
+Entel Perú S.A.,2017-06-01 00:00:00,2017,Recuperados,3333
+Flash Servicios Perú S.R.L.,2017-06-01 00:00:00,2017,Recuperados,3
+Flash Servicios Perú S.R.L.,2017-06-01 00:00:00,2017,Sustraídos,61
+Flash Servicios Perú S.R.L.,2017-06-01 00:00:00,2017,Perdidos,1
+Telefónica del Perú S.A.A.,2017-06-01 00:00:00,2017,Recuperados,3860
+Telefónica del Perú S.A.A.,2017-06-01 00:00:00,2017,Sustraídos,70447
+Telefónica del Perú S.A.A.,2017-06-01 00:00:00,2017,Perdidos,22342
+Viettel Perú S.A.C.,2017-06-01 00:00:00,2017,Perdidos,2489
+Viettel Perú S.A.C.,2017-06-01 00:00:00,2017,Sustraídos,7511
+Viettel Perú S.A.C.,2017-06-01 00:00:00,2017,Recuperados,272
+América Movil Perú S.A.C.,2017-07-01 00:00:00,2017,Sustraídos,64354
+América Movil Perú S.A.C.,2017-07-01 00:00:00,2017,Recuperados,4568
+América Movil Perú S.A.C.,2017-07-01 00:00:00,2017,Perdidos,29572
+Entel Perú S.A.,2017-07-01 00:00:00,2017,Perdidos,756
+Entel Perú S.A.,2017-07-01 00:00:00,2017,Sustraídos,54498
+Entel Perú S.A.,2017-07-01 00:00:00,2017,Recuperados,3604
+Flash Servicios Perú S.R.L.,2017-07-01 00:00:00,2017,Recuperados,2
+Flash Servicios Perú S.R.L.,2017-07-01 00:00:00,2017,Sustraídos,44
+Telefónica del Perú S.A.A.,2017-07-01 00:00:00,2017,Perdidos,25735
+Telefónica del Perú S.A.A.,2017-07-01 00:00:00,2017,Recuperados,3812
+Telefónica del Perú S.A.A.,2017-07-01 00:00:00,2017,Sustraídos,70616
+Viettel Perú S.A.C.,2017-07-01 00:00:00,2017,Recuperados,356
+Viettel Perú S.A.C.,2017-07-01 00:00:00,2017,Sustraídos,9158
+Viettel Perú S.A.C.,2017-07-01 00:00:00,2017,Perdidos,2757
+América Movil Perú S.A.C.,2017-08-01 00:00:00,2017,Sustraídos,62416
+América Movil Perú S.A.C.,2017-08-01 00:00:00,2017,Recuperados,4639
+América Movil Perú S.A.C.,2017-08-01 00:00:00,2017,Perdidos,28650
+Entel Perú S.A.,2017-08-01 00:00:00,2017,Recuperados,3518
+Entel Perú S.A.,2017-08-01 00:00:00,2017,Perdidos,684
+Entel Perú S.A.,2017-08-01 00:00:00,2017,Sustraídos,54801
+Flash Servicios Perú S.R.L.,2017-08-01 00:00:00,2017,Sustraídos,28
+Flash Servicios Perú S.R.L.,2017-08-01 00:00:00,2017,Perdidos,1
+Telefónica del Perú S.A.A.,2017-08-01 00:00:00,2017,Perdidos,24843
+Telefónica del Perú S.A.A.,2017-08-01 00:00:00,2017,Recuperados,3868
+Telefónica del Perú S.A.A.,2017-08-01 00:00:00,2017,Sustraídos,64511
+Viettel Perú S.A.C.,2017-08-01 00:00:00,2017,Perdidos,3026
+Viettel Perú S.A.C.,2017-08-01 00:00:00,2017,Recuperados,401
+Viettel Perú S.A.C.,2017-08-01 00:00:00,2017,Sustraídos,38835
+América Movil Perú S.A.C.,2017-09-01 00:00:00,2017,Sustraídos,61712
+América Movil Perú S.A.C.,2017-09-01 00:00:00,2017,Perdidos,27377
+América Movil Perú S.A.C.,2017-09-01 00:00:00,2017,Recuperados,4975
+Entel Perú S.A.,2017-09-01 00:00:00,2017,Sustraídos,55192
+Entel Perú S.A.,2017-09-01 00:00:00,2017,Perdidos,589
+Entel Perú S.A.,2017-09-01 00:00:00,2017,Recuperados,3806
+Flash Servicios Perú S.R.L.,2017-09-01 00:00:00,2017,Perdidos,1
+Flash Servicios Perú S.R.L.,2017-09-01 00:00:00,2017,Recuperados,2
+Flash Servicios Perú S.R.L.,2017-09-01 00:00:00,2017,Sustraídos,16
+Telefónica del Perú S.A.A.,2017-09-01 00:00:00,2017,Sustraídos,58165
+Telefónica del Perú S.A.A.,2017-09-01 00:00:00,2017,Perdidos,23813
+Telefónica del Perú S.A.A.,2017-09-01 00:00:00,2017,Recuperados,3983
+Viettel Perú S.A.C.,2017-09-01 00:00:00,2017,Sustraídos,8704
+Viettel Perú S.A.C.,2017-09-01 00:00:00,2017,Recuperados,449
+Viettel Perú S.A.C.,2017-09-01 00:00:00,2017,Perdidos,2591
+América Movil Perú S.A.C.,2017-10-01 00:00:00,2017,Recuperados,5129
+América Movil Perú S.A.C.,2017-10-01 00:00:00,2017,Sustraídos,63471
+América Movil Perú S.A.C.,2017-10-01 00:00:00,2017,Perdidos,28745
+Entel Perú S.A.,2017-10-01 00:00:00,2017,Sustraídos,56550
+Entel Perú S.A.,2017-10-01 00:00:00,2017,Perdidos,323
+Entel Perú S.A.,2017-10-01 00:00:00,2017,Recuperados,3596
+Flash Servicios Perú S.R.L.,2017-10-01 00:00:00,2017,Perdidos,2
+Flash Servicios Perú S.R.L.,2017-10-01 00:00:00,2017,Sustraídos,15
+Telefónica del Perú S.A.A.,2017-10-01 00:00:00,2017,Recuperados,7068
+Telefónica del Perú S.A.A.,2017-10-01 00:00:00,2017,Sustraídos,60998
+Telefónica del Perú S.A.A.,2017-10-01 00:00:00,2017,Perdidos,29279
+Viettel Perú S.A.C.,2017-10-01 00:00:00,2017,Recuperados,661
+Viettel Perú S.A.C.,2017-10-01 00:00:00,2017,Sustraídos,10550
+Viettel Perú S.A.C.,2017-10-01 00:00:00,2017,Perdidos,2617
+América Movil Perú S.A.C.,2017-11-01 00:00:00,2017,Recuperados,5049
+América Movil Perú S.A.C.,2017-11-01 00:00:00,2017,Sustraídos,61050
+América Movil Perú S.A.C.,2017-11-01 00:00:00,2017,Perdidos,27287
+Entel Perú S.A.,2017-11-01 00:00:00,2017,Sustraídos,57625
+Entel Perú S.A.,2017-11-01 00:00:00,2017,Recuperados,3516
+Entel Perú S.A.,2017-11-01 00:00:00,2017,Perdidos,240
+Flash Servicios Perú S.R.L.,2017-11-01 00:00:00,2017,Sustraídos,16
+Telefónica del Perú S.A.A.,2017-11-01 00:00:00,2017,Sustraídos,57995
+Telefónica del Perú S.A.A.,2017-11-01 00:00:00,2017,Recuperados,3571
+Telefónica del Perú S.A.A.,2017-11-01 00:00:00,2017,Perdidos,18734
+Viettel Perú S.A.C.,2017-11-01 00:00:00,2017,Recuperados,481
+Viettel Perú S.A.C.,2017-11-01 00:00:00,2017,Sustraídos,8796
+Viettel Perú S.A.C.,2017-11-01 00:00:00,2017,Perdidos,2651
+América Movil Perú S.A.C.,2017-12-01 00:00:00,2017,Perdidos,27646
+América Movil Perú S.A.C.,2017-12-01 00:00:00,2017,Recuperados,5016
+América Movil Perú S.A.C.,2017-12-01 00:00:00,2017,Sustraídos,65621
+Entel Perú S.A.,2017-12-01 00:00:00,2017,Perdidos,680
+Entel Perú S.A.,2017-12-01 00:00:00,2017,Recuperados,5134
+Entel Perú S.A.,2017-12-01 00:00:00,2017,Sustraídos,61376
+Flash Servicios Perú S.R.L.,2017-12-01 00:00:00,2017,Sustraídos,13
+Flash Servicios Perú S.R.L.,2017-12-01 00:00:00,2017,Recuperados,1
+Telefónica del Perú S.A.A.,2017-12-01 00:00:00,2017,Recuperados,3879
+Telefónica del Perú S.A.A.,2017-12-01 00:00:00,2017,Sustraídos,65345
+Telefónica del Perú S.A.A.,2017-12-01 00:00:00,2017,Perdidos,22892
+Viettel Perú S.A.C.,2017-12-01 00:00:00,2017,Recuperados,455
+Viettel Perú S.A.C.,2017-12-01 00:00:00,2017,Perdidos,2322
+Viettel Perú S.A.C.,2017-12-01 00:00:00,2017,Sustraídos,8343
+América Movil Perú S.A.C.,2018-01-01 00:00:00,2018,Sustraídos,62855
+América Movil Perú S.A.C.,2018-01-01 00:00:00,2018,Recuperados,4992
+América Movil Perú S.A.C.,2018-01-01 00:00:00,2018,Perdidos,26299
+Entel Perú S.A.,2018-01-01 00:00:00,2018,Sustraídos,57518
+Entel Perú S.A.,2018-01-01 00:00:00,2018,Recuperados,4396
+Entel Perú S.A.,2018-01-01 00:00:00,2018,Perdidos,453
+Flash Servicios Perú S.R.L.,2018-01-01 00:00:00,2018,Perdidos,2
+Flash Servicios Perú S.R.L.,2018-01-01 00:00:00,2018,Sustraídos,15
+Telefónica del Perú S.A.A.,2018-01-01 00:00:00,2018,Sustraídos,59271
+Telefónica del Perú S.A.A.,2018-01-01 00:00:00,2018,Recuperados,3847
+Telefónica del Perú S.A.A.,2018-01-01 00:00:00,2018,Perdidos,23630
+Viettel Perú S.A.C.,2018-01-01 00:00:00,2018,Sustraídos,9646
+Viettel Perú S.A.C.,2018-01-01 00:00:00,2018,Recuperados,561
+Viettel Perú S.A.C.,2018-01-01 00:00:00,2018,Perdidos,2618
+América Movil Perú S.A.C.,2018-02-01 00:00:00,2018,Perdidos,23620
+América Movil Perú S.A.C.,2018-02-01 00:00:00,2018,Sustraídos,59899
+América Movil Perú S.A.C.,2018-02-01 00:00:00,2018,Recuperados,4207
+Entel Perú S.A.,2018-02-01 00:00:00,2018,Recuperados,3660
+Entel Perú S.A.,2018-02-01 00:00:00,2018,Sustraídos,52322
+Entel Perú S.A.,2018-02-01 00:00:00,2018,Perdidos,254
+Flash Servicios Perú S.R.L.,2018-02-01 00:00:00,2018,Perdidos,1
+Flash Servicios Perú S.R.L.,2018-02-01 00:00:00,2018,Sustraídos,11
+Flash Servicios Perú S.R.L.,2018-02-01 00:00:00,2018,Recuperados,1
+Telefónica del Perú S.A.A.,2018-02-01 00:00:00,2018,Sustraídos,54505
+Telefónica del Perú S.A.A.,2018-02-01 00:00:00,2018,Recuperados,3827
+Telefónica del Perú S.A.A.,2018-02-01 00:00:00,2018,Perdidos,19626
+Viettel Perú S.A.C.,2018-02-01 00:00:00,2018,Sustraídos,8814
+Viettel Perú S.A.C.,2018-02-01 00:00:00,2018,Perdidos,2370
+Viettel Perú S.A.C.,2018-02-01 00:00:00,2018,Recuperados,477
+América Movil Perú S.A.C.,2018-03-01 00:00:00,2018,Recuperados,4328
+América Movil Perú S.A.C.,2018-03-01 00:00:00,2018,Perdidos,23386
+América Movil Perú S.A.C.,2018-03-01 00:00:00,2018,Sustraídos,64320
+Entel Perú S.A.,2018-03-01 00:00:00,2018,Sustraídos,54662
+Entel Perú S.A.,2018-03-01 00:00:00,2018,Perdidos,418
+Entel Perú S.A.,2018-03-01 00:00:00,2018,Recuperados,3779
+Flash Servicios Perú S.R.L.,2018-03-01 00:00:00,2018,Sustraídos,7
+Flash Servicios Perú S.R.L.,2018-03-01 00:00:00,2018,Perdidos,2
+Telefónica del Perú S.A.A.,2018-03-01 00:00:00,2018,Sustraídos,58948
+Telefónica del Perú S.A.A.,2018-03-01 00:00:00,2018,Recuperados,3597
+Telefónica del Perú S.A.A.,2018-03-01 00:00:00,2018,Perdidos,21434
+Viettel Perú S.A.C.,2018-03-01 00:00:00,2018,Recuperados,611
+Viettel Perú S.A.C.,2018-03-01 00:00:00,2018,Perdidos,3155
+Viettel Perú S.A.C.,2018-03-01 00:00:00,2018,Sustraídos,11077
+América Movil Perú S.A.C.,2018-04-01 00:00:00,2018,Sustraídos,62348
+América Movil Perú S.A.C.,2018-04-01 00:00:00,2018,Perdidos,22252
+América Movil Perú S.A.C.,2018-04-01 00:00:00,2018,Recuperados,6067
+Entel Perú S.A.,2018-04-01 00:00:00,2018,Sustraídos,53187
+Entel Perú S.A.,2018-04-01 00:00:00,2018,Perdidos,1627
+Entel Perú S.A.,2018-04-01 00:00:00,2018,Recuperados,3487
+Flash Servicios Perú S.R.L.,2018-04-01 00:00:00,2018,Sustraídos,6
+Telefónica del Perú S.A.A.,2018-04-01 00:00:00,2018,Perdidos,20154
+Telefónica del Perú S.A.A.,2018-04-01 00:00:00,2018,Recuperados,4604
+Telefónica del Perú S.A.A.,2018-04-01 00:00:00,2018,Sustraídos,60389
+Viettel Perú S.A.C.,2018-04-01 00:00:00,2018,Sustraídos,10925
+Viettel Perú S.A.C.,2018-04-01 00:00:00,2018,Recuperados,644
+Viettel Perú S.A.C.,2018-04-01 00:00:00,2018,Perdidos,3031
+América Movil Perú S.A.C.,2018-05-01 00:00:00,2018,Perdidos,24657
+América Movil Perú S.A.C.,2018-05-01 00:00:00,2018,Recuperados,4580
+América Movil Perú S.A.C.,2018-05-01 00:00:00,2018,Sustraídos,65337
+Entel Perú S.A.,2018-05-01 00:00:00,2018,Sustraídos,52016
+Entel Perú S.A.,2018-05-01 00:00:00,2018,Recuperados,3244
+Entel Perú S.A.,2018-05-01 00:00:00,2018,Perdidos,2652
+Flash Servicios Perú S.R.L.,2018-05-01 00:00:00,2018,Recuperados,1
+Flash Servicios Perú S.R.L.,2018-05-01 00:00:00,2018,Sustraídos,15
+Telefónica del Perú S.A.A.,2018-05-01 00:00:00,2018,Recuperados,3908
+Telefónica del Perú S.A.A.,2018-05-01 00:00:00,2018,Perdidos,20158
+Telefónica del Perú S.A.A.,2018-05-01 00:00:00,2018,Sustraídos,75471
+Viettel Perú S.A.C.,2018-05-01 00:00:00,2018,Perdidos,3356
+Viettel Perú S.A.C.,2018-05-01 00:00:00,2018,Sustraídos,12116
+Viettel Perú S.A.C.,2018-05-01 00:00:00,2018,Recuperados,696
+América Movil Perú S.A.C.,2018-06-01 00:00:00,2018,Sustraídos,60548
+América Movil Perú S.A.C.,2018-06-01 00:00:00,2018,Recuperados,4190
+América Movil Perú S.A.C.,2018-06-01 00:00:00,2018,Perdidos,24268
+Entel Perú S.A.,2018-06-01 00:00:00,2018,Sustraídos,47768
+Entel Perú S.A.,2018-06-01 00:00:00,2018,Recuperados,3471
+Entel Perú S.A.,2018-06-01 00:00:00,2018,Perdidos,2155
+Flash Servicios Perú S.R.L.,2018-06-01 00:00:00,2018,Sustraídos,4
+Telefónica del Perú S.A.A.,2018-06-01 00:00:00,2018,Perdidos,18462
+Telefónica del Perú S.A.A.,2018-06-01 00:00:00,2018,Sustraídos,59398
+Telefónica del Perú S.A.A.,2018-06-01 00:00:00,2018,Recuperados,3074
+Viettel Perú S.A.C.,2018-06-01 00:00:00,2018,Recuperados,751
+Viettel Perú S.A.C.,2018-06-01 00:00:00,2018,Sustraídos,11736
+Viettel Perú S.A.C.,2018-06-01 00:00:00,2018,Perdidos,3293
+América Movil Perú S.A.C.,2018-07-01 00:00:00,2018,Sustraídos,63772
+América Movil Perú S.A.C.,2018-07-01 00:00:00,2018,Recuperados,4343
+América Movil Perú S.A.C.,2018-07-01 00:00:00,2018,Perdidos,25470
+Entel Perú S.A.,2018-07-01 00:00:00,2018,Perdidos,2366
+Entel Perú S.A.,2018-07-01 00:00:00,2018,Recuperados,3446
+Entel Perú S.A.,2018-07-01 00:00:00,2018,Sustraídos,51591
+Flash Servicios Perú S.R.L.,2018-07-01 00:00:00,2018,Sustraídos,3
+Telefónica del Perú S.A.A.,2018-07-01 00:00:00,2018,Recuperados,3939
+Telefónica del Perú S.A.A.,2018-07-01 00:00:00,2018,Sustraídos,74585
+Telefónica del Perú S.A.A.,2018-07-01 00:00:00,2018,Perdidos,18574
+Viettel Perú S.A.C.,2018-07-01 00:00:00,2018,Perdidos,3519
+Viettel Perú S.A.C.,2018-07-01 00:00:00,2018,Sustraídos,12940
+Viettel Perú S.A.C.,2018-07-01 00:00:00,2018,Recuperados,654
+América Movil Perú S.A.C.,2018-08-01 00:00:00,2018,Recuperados,3473
+América Movil Perú S.A.C.,2018-08-01 00:00:00,2018,Perdidos,24993
+América Movil Perú S.A.C.,2018-08-01 00:00:00,2018,Sustraídos,60486
+Entel Perú S.A.,2018-08-01 00:00:00,2018,Recuperados,3538
+Entel Perú S.A.,2018-08-01 00:00:00,2018,Sustraídos,52048
+Entel Perú S.A.,2018-08-01 00:00:00,2018,Perdidos,2338
+Flash Servicios Perú S.R.L.,2018-08-01 00:00:00,2018,Sustraídos,7
+Telefónica del Perú S.A.A.,2018-08-01 00:00:00,2018,Recuperados,3157
+Telefónica del Perú S.A.A.,2018-08-01 00:00:00,2018,Sustraídos,60871
+Telefónica del Perú S.A.A.,2018-08-01 00:00:00,2018,Perdidos,19072
+Viettel Perú S.A.C.,2018-08-01 00:00:00,2018,Sustraídos,13631
+Viettel Perú S.A.C.,2018-08-01 00:00:00,2018,Perdidos,3351
+Viettel Perú S.A.C.,2018-08-01 00:00:00,2018,Recuperados,736
+América Movil Perú S.A.C.,2018-09-01 00:00:00,2018,Recuperados,3302
+América Movil Perú S.A.C.,2018-09-01 00:00:00,2018,Sustraídos,61437
+América Movil Perú S.A.C.,2018-09-01 00:00:00,2018,Perdidos,23901
+Entel Perú S.A.,2018-09-01 00:00:00,2018,Sustraídos,53641
+Entel Perú S.A.,2018-09-01 00:00:00,2018,Perdidos,2120
+Entel Perú S.A.,2018-09-01 00:00:00,2018,Recuperados,3438
+Flash Servicios Perú S.R.L.,2018-09-01 00:00:00,2018,Perdidos,2
+Flash Servicios Perú S.R.L.,2018-09-01 00:00:00,2018,Sustraídos,10
+Flash Servicios Perú S.R.L.,2018-09-01 00:00:00,2018,Recuperados,1
+Telefónica del Perú S.A.A.,2018-09-01 00:00:00,2018,Sustraídos,60935
+Telefónica del Perú S.A.A.,2018-09-01 00:00:00,2018,Recuperados,3029
+Telefónica del Perú S.A.A.,2018-09-01 00:00:00,2018,Perdidos,18293
+Viettel Perú S.A.C.,2018-09-01 00:00:00,2018,Perdidos,3589
+Viettel Perú S.A.C.,2018-09-01 00:00:00,2018,Recuperados,754
+Viettel Perú S.A.C.,2018-09-01 00:00:00,2018,Sustraídos,15421
+América Movil Perú S.A.C.,2018-10-01 00:00:00,2018,Recuperados,3414
+América Movil Perú S.A.C.,2018-10-01 00:00:00,2018,Sustraídos,62514
+América Movil Perú S.A.C.,2018-10-01 00:00:00,2018,Perdidos,22203
+Entel Perú S.A.,2018-10-01 00:00:00,2018,Perdidos,1931
+Entel Perú S.A.,2018-10-01 00:00:00,2018,Sustraídos,53640
+Entel Perú S.A.,2018-10-01 00:00:00,2018,Recuperados,3910
+Flash Servicios Perú S.R.L.,2018-10-01 00:00:00,2018,Sustraídos,6
