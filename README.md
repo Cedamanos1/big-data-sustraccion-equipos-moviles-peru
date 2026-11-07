@@ -13,7 +13,7 @@ a qué operadora priorizar en la supervisión del RENTESEG.
 
 | Componente | Versión probada |
 |---|---|
-| Java | OpenJDK 21 |
+| Java | OpenJDK 17 (cualquier versión 11, 17 o 21 funciona) |
 | Apache Spark / PySpark | 3.5.1 |
 | Python | 3.11 o superior |
 | Librerías | ver `requirements.txt` (pandas, openpyxl, scikit-learn, matplotlib, psutil) |
