@@ -1,0 +1,47 @@
+== Physical Plan ==
+* HashAggregate (7)
++- Exchange (6)
+   +- * HashAggregate (5)
+      +- * Project (4)
+         +- * Filter (3)
+            +- * ColumnarToRow (2)
+               +- Scan parquet  (1)
+
+
+(1) Scan parquet 
+Output [3]: [operadora#14533, reclamos#14539L, anio#14541]
+Batched: true
+Location: InMemoryFileIndex [file:/home/olazabal/big-data-sustraccion-equipos-moviles-peru/data/lake/_benchmark/reclamos_sin_particion]
+PushedFilters: [IsNotNull(anio), EqualTo(anio,2025)]
+ReadSchema: struct<operadora:string,reclamos:bigint,anio:int>
+
+(2) ColumnarToRow [codegen id : 1]
+Input [3]: [operadora#14533, reclamos#14539L, anio#14541]
+
+(3) Filter [codegen id : 1]
+Input [3]: [operadora#14533, reclamos#14539L, anio#14541]
+Condition : (isnotnull(anio#14541) AND (anio#14541 = 2025))
+
+(4) Project [codegen id : 1]
+Output [2]: [operadora#14533, reclamos#14539L]
+Input [3]: [operadora#14533, reclamos#14539L, anio#14541]
+
+(5) HashAggregate [codegen id : 1]
+Input [2]: [operadora#14533, reclamos#14539L]
+Keys [1]: [operadora#14533]
+Functions [1]: [partial_sum(reclamos#14539L)]
+Aggregate Attributes [1]: [sum#14567L]
+Results [2]: [operadora#14533, sum#14568L]
+
+(6) Exchange
+Input [2]: [operadora#14533, sum#14568L]
+Arguments: hashpartitioning(operadora#14533, 8), ENSURE_REQUIREMENTS, [plan_id=5527]
+
+(7) HashAggregate [codegen id : 2]
+Input [2]: [operadora#14533, sum#14568L]
+Keys [1]: [operadora#14533]
+Functions [1]: [sum(reclamos#14539L)]
+Aggregate Attributes [1]: [sum(reclamos#14539L)#14563L]
+Results [2]: [operadora#14533, sum(reclamos#14539L)#14563L AS reclamos#14564L]
+
+

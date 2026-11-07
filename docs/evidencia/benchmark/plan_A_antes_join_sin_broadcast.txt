@@ -1,0 +1,113 @@
+== Physical Plan ==
+* Project (18)
++- * SortMergeJoin LeftOuter (17)
+   :- * Sort (8)
+   :  +- * HashAggregate (7)
+   :     +- Exchange (6)
+   :        +- * HashAggregate (5)
+   :           +- * Project (4)
+   :              +- * Filter (3)
+   :                 +- * ColumnarToRow (2)
+   :                    +- Scan parquet  (1)
+   +- * Sort (16)
+      +- * Project (15)
+         +- * HashAggregate (14)
+            +- Exchange (13)
+               +- * HashAggregate (12)
+                  +- * Filter (11)
+                     +- * ColumnarToRow (10)
+                        +- Scan parquet  (9)
+
+
+(1) Scan parquet 
+Output [7]: [fecha_mes#13647, operadora#13648, departamento#13650, materia#13652, reclamos#13654L, es_movil#13655, anio#13656]
+Batched: true
+Location: InMemoryFileIndex [file:/home/olazabal/big-data-sustraccion-equipos-moviles-peru/data/lake/silver/reclamos]
+PushedFilters: [IsNotNull(es_movil), IsNotNull(fecha_mes), EqualTo(es_movil,true), EqualTo(fecha_mes,2023-03-01), IsNotNull(departamento)]
+ReadSchema: struct<fecha_mes:date,operadora:string,departamento:string,materia:string,reclamos:bigint,es_movil:boolean>
+
+(2) ColumnarToRow [codegen id : 1]
+Input [7]: [fecha_mes#13647, operadora#13648, departamento#13650, materia#13652, reclamos#13654L, es_movil#13655, anio#13656]
+
+(3) Filter [codegen id : 1]
+Input [7]: [fecha_mes#13647, operadora#13648, departamento#13650, materia#13652, reclamos#13654L, es_movil#13655, anio#13656]
+Condition : ((((isnotnull(es_movil#13655) AND isnotnull(fecha_mes#13647)) AND es_movil#13655) AND (fecha_mes#13647 = 2023-03-01)) AND isnotnull(departamento#13650))
+
+(4) Project [codegen id : 1]
+Output [4]: [operadora#13648, departamento#13650, materia#13652, reclamos#13654L]
+Input [7]: [fecha_mes#13647, operadora#13648, departamento#13650, materia#13652, reclamos#13654L, es_movil#13655, anio#13656]
+
+(5) HashAggregate [codegen id : 1]
+Input [4]: [operadora#13648, departamento#13650, materia#13652, reclamos#13654L]
+Keys [2]: [departamento#13650, operadora#13648]
+Functions [2]: [partial_sum(reclamos#13654L), partial_sum(CASE WHEN materia#13652 IN (CALIDAD E IDONEIDAD EN LA PRESTACION DEL SERVICIO,FALTA DE SERVICIO) THEN reclamos#13654L ELSE 0 END)]
+Aggregate Attributes [2]: [sum#13785L, sum#13786L]
+Results [4]: [departamento#13650, operadora#13648, sum#13787L, sum#13788L]
+
+(6) Exchange
+Input [4]: [departamento#13650, operadora#13648, sum#13787L, sum#13788L]
+Arguments: hashpartitioning(departamento#13650, operadora#13648, 8), ENSURE_REQUIREMENTS, [plan_id=4604]
+
+(7) HashAggregate [codegen id : 2]
+Input [4]: [departamento#13650, operadora#13648, sum#13787L, sum#13788L]
+Keys [2]: [departamento#13650, operadora#13648]
+Functions [2]: [sum(reclamos#13654L), sum(CASE WHEN materia#13652 IN (CALIDAD E IDONEIDAD EN LA PRESTACION DEL SERVICIO,FALTA DE SERVICIO) THEN reclamos#13654L ELSE 0 END)]
+Aggregate Attributes [2]: [sum(reclamos#13654L)#13714L, sum(CASE WHEN materia#13652 IN (CALIDAD E IDONEIDAD EN LA PRESTACION DEL SERVICIO,FALTA DE SERVICIO) THEN reclamos#13654L ELSE 0 END)#13716L]
+Results [4]: [departamento#13650, operadora#13648, sum(reclamos#13654L)#13714L AS reclamos_moviles#13715L, sum(CASE WHEN materia#13652 IN (CALIDAD E IDONEIDAD EN LA PRESTACION DEL SERVICIO,FALTA DE SERVICIO) THEN reclamos#13654L ELSE 0 END)#13716L AS reclamos_calidad#13717L]
+
+(8) Sort [codegen id : 2]
+Input [4]: [departamento#13650, operadora#13648, reclamos_moviles#13715L, reclamos_calidad#13717L]
+Arguments: [departamento#13650 ASC NULLS FIRST, operadora#13648 ASC NULLS FIRST], false, 0
+
+(9) Scan parquet 
+Output [4]: [departamento#11, tiene_4g#16, estaciones_4g#18, operadora#19]
+Batched: true
+Location: InMemoryFileIndex [file:/home/olazabal/big-data-sustraccion-equipos-moviles-peru/data/lake/silver/cobertura]
+PartitionFilters: [isnotnull(operadora#19), dynamicpruningexpression(true)]
+PushedFilters: [IsNotNull(departamento)]
+ReadSchema: struct<departamento:string,tiene_4g:int,estaciones_4g:int>
+
+(10) ColumnarToRow [codegen id : 3]
+Input [4]: [departamento#11, tiene_4g#16, estaciones_4g#18, operadora#19]
+
+(11) Filter [codegen id : 3]
+Input [4]: [departamento#11, tiene_4g#16, estaciones_4g#18, operadora#19]
+Condition : isnotnull(departamento#11)
+
+(12) HashAggregate [codegen id : 3]
+Input [4]: [departamento#11, tiene_4g#16, estaciones_4g#18, operadora#19]
+Keys [2]: [departamento#11, operadora#19]
+Functions [3]: [partial_count(1), partial_sum(tiene_4g#16), partial_sum(estaciones_4g#18)]
+Aggregate Attributes [3]: [count#13789L, sum#13790L, sum#13791L]
+Results [5]: [departamento#11, operadora#19, count#13792L, sum#13793L, sum#13794L]
+
+(13) Exchange
+Input [5]: [departamento#11, operadora#19, count#13792L, sum#13793L, sum#13794L]
+Arguments: hashpartitioning(departamento#11, operadora#19, 8), ENSURE_REQUIREMENTS, [plan_id=4615]
+
+(14) HashAggregate [codegen id : 4]
+Input [5]: [departamento#11, operadora#19, count#13792L, sum#13793L, sum#13794L]
+Keys [2]: [departamento#11, operadora#19]
+Functions [3]: [count(1), sum(tiene_4g#16), sum(estaciones_4g#18)]
+Aggregate Attributes [3]: [count(1)#13677L, sum(tiene_4g#16)#13679L, sum(estaciones_4g#18)#13681L]
+Results [5]: [departamento#11, operadora#19, count(1)#13677L AS ccpp#13678L, sum(tiene_4g#16)#13679L AS ccpp_4g#13680L, sum(estaciones_4g#18)#13681L AS estaciones_4g#13682L]
+
+(15) Project [codegen id : 4]
+Output [7]: [departamento#11, operadora#19, ccpp#13678L, ccpp_4g#13680L, estaciones_4g#13682L, round((cast((ccpp_4g#13680L * 100) as double) / cast(ccpp#13678L as double)), 3) AS pct_ccpp_4g#13688, true AS _v#13695]
+Input [5]: [departamento#11, operadora#19, ccpp#13678L, ccpp_4g#13680L, estaciones_4g#13682L]
+
+(16) Sort [codegen id : 4]
+Input [7]: [departamento#11, operadora#19, ccpp#13678L, ccpp_4g#13680L, estaciones_4g#13682L, pct_ccpp_4g#13688, _v#13695]
+Arguments: [departamento#11 ASC NULLS FIRST, operadora#19 ASC NULLS FIRST], false, 0
+
+(17) SortMergeJoin [codegen id : 5]
+Left keys [2]: [departamento#13650, operadora#13648]
+Right keys [2]: [departamento#11, operadora#19]
+Join type: LeftOuter
+Join condition: None
+
+(18) Project [codegen id : 5]
+Output [10]: [departamento#13650, operadora#13648, reclamos_moviles#13715L, reclamos_calidad#13717L, ccpp#13678L, ccpp_4g#13680L, estaciones_4g#13682L, pct_ccpp_4g#13688, CASE WHEN coalesce(_v#13695, false) THEN ambas ELSE solo_reclamos END AS origen_join#13749, 2023-03-01 AS periodo#13761]
+Input [11]: [departamento#13650, operadora#13648, reclamos_moviles#13715L, reclamos_calidad#13717L, departamento#11, operadora#19, ccpp#13678L, ccpp_4g#13680L, estaciones_4g#13682L, pct_ccpp_4g#13688, _v#13695]
+
+

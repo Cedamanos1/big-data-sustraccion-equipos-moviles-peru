@@ -1,0 +1,72 @@
+{
+  "maquina": {
+    "fecha": "2026-11-06T19:46:03",
+    "maquina": "Debian",
+    "so": "Linux-6.1.0-35-amd64-x86_64-with-glibc2.36",
+    "python": "3.11.2",
+    "cpu_logicas": 4,
+    "ram_total_gb": 6.73,
+    "swap_total_gb": 1.02,
+    "disco_libre_gb": 9.7
+  },
+  "spark": "3.5.1",
+  "repeticiones": 6,
+  "nota": "AQE desactivado en todas las corridas; 1 corrida de calentamiento descartada",
+  "A_antes_sin_cache_ni_broadcast": {
+    "promedio_s": 3.585,
+    "desv_estandar_s": 1.172,
+    "mediana_s": 3.289,
+    "corridas_s": [
+      5.784,
+      3.053,
+      2.384,
+      3.525,
+      3.713,
+      3.051
+    ]
+  },
+  "A_despues_con_cache_y_broadcast": {
+    "promedio_s": 2.635,
+    "desv_estandar_s": 0.258,
+    "mediana_s": 2.566,
+    "corridas_s": [
+      2.57,
+      2.562,
+      2.766,
+      2.431,
+      3.09,
+      2.393
+    ]
+  },
+  "B_antes_sin_particion": {
+    "promedio_s": 0.328,
+    "desv_estandar_s": 0.052,
+    "mediana_s": 0.319,
+    "corridas_s": [
+      0.297,
+      0.269,
+      0.338,
+      0.422,
+      0.319,
+      0.319
+    ]
+  },
+  "B_despues_particionado_anio": {
+    "promedio_s": 0.284,
+    "desv_estandar_s": 0.025,
+    "mediana_s": 0.276,
+    "corridas_s": [
+      0.285,
+      0.323,
+      0.267,
+      0.257,
+      0.303,
+      0.268
+    ]
+  },
+  "B_resultados_iguales": true,
+  "A_mejora_pct": 26.5,
+  "A_veces_mas_rapido": 1.36,
+  "B_mejora_pct": 13.4,
+  "B_veces_mas_rapido": 1.15
+}

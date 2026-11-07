@@ -1,0 +1,40 @@
+26/11/06 19:45:58 WARN Utils: Your hostname, Debian resolves to a loopback address: 127.0.1.1; using 10.0.2.15 instead (on interface enp0s3)
+26/11/06 19:45:58 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/11/06 19:45:59 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[Stage 0:>                                                          (0 + 1) / 1]                                                                                [Stage 3:>                  (0 + 3) / 3][Stage 5:>                  (0 + 1) / 4][Stage 3:======>            (1 + 2) / 3][Stage 5:>                  (0 + 2) / 4][Stage 5:>                                                          (0 + 4) / 4][Stage 4:>                                                          (0 + 4) / 8][Stage 4:=======>                                                   (1 + 5) / 8][Stage 4:======================>                                    (3 + 5) / 8][Stage 4:============================================>              (6 + 2) / 8][Stage 6:>                                                          (0 + 4) / 8][Stage 6:=============================>                             (4 + 4) / 8][Stage 6:====================================>                      (5 + 3) / 8]                                                                                [Stage 8:=============================>                             (2 + 2) / 4][Stage 9:=======>                                                   (1 + 5) / 8][Stage 9:======================>                                    (3 + 5) / 8]                                                                                [Stage 13:===========================================>              (3 + 1) / 4][Stage 12:====>             (2 + 3) / 8][Stage 13:=============>    (3 + 1) / 4][Stage 12:======>           (3 + 3) / 8][Stage 13:=============>    (3 + 1) / 4][Stage 12:=============================>                            (4 + 4) / 8]                                                                                [A] GOLD sin caché ni broadcast
+   corrida 1/6: 5.78 s
+[Stage 20:==================================================>       (7 + 1) / 8]                                                                                   corrida 2/6: 3.05 s
+   corrida 3/6: 2.38 s
+   corrida 4/6: 3.53 s
+   corrida 5/6: 3.71 s
+   corrida 6/6: 3.05 s
+[Stage 59:>                                                         (0 + 4) / 4][Stage 59:===========================================>              (3 + 1) / 4]                                                                                [Stage 70:===========================================>              (3 + 1) / 4]                                                                                [A] GOLD con caché y broadcast
+   corrida 1/6: 2.57 s
+[Stage 81:===========================================>              (3 + 1) / 4]                                                                                   corrida 2/6: 2.56 s
+[Stage 92:===========================================>              (3 + 1) / 4]                                                                                   corrida 3/6: 2.77 s
+[Stage 103:==========================================>              (3 + 1) / 4]                                                                                   corrida 4/6: 2.43 s
+[Stage 114:==========================================>              (3 + 1) / 4]                                                                                   corrida 5/6: 3.09 s
+[Stage 125:==========================================>              (3 + 1) / 4]                                                                                   corrida 6/6: 2.39 s
+[Stage 137:==========================================>              (3 + 1) / 4]                                                                                [B] consulta 2025 sin partición
+   corrida 1/6: 0.30 s
+   corrida 2/6: 0.27 s
+   corrida 3/6: 0.34 s
+   corrida 4/6: 0.42 s
+   corrida 5/6: 0.32 s
+   corrida 6/6: 0.32 s
+[B] consulta 2025 particionada
+   corrida 1/6: 0.28 s
+   corrida 2/6: 0.32 s
+   corrida 3/6: 0.27 s
+   corrida 4/6: 0.26 s
+   corrida 5/6: 0.30 s
+   corrida 6/6: 0.27 s
+{
+  "B_resultados_iguales": true,
+  "A_mejora_pct": 26.5,
+  "A_veces_mas_rapido": 1.36,
+  "B_mejora_pct": 13.4,
+  "B_veces_mas_rapido": 1.15
+}
