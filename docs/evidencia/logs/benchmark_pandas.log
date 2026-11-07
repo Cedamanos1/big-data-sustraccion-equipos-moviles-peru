@@ -1,0 +1,22 @@
+
+[PANDAS] factor 1× → /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/pandas_x1.log
+[PANDAS] 1×: completado · 3.0 s · memoria pico del proceso 121 MB
+
+[PANDAS] factor 10× → /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/pandas_x10.log
+[PANDAS] 10×: completado · 7.1 s · memoria pico del proceso 528 MB
+
+[PANDAS] factor 25× → /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/pandas_x25.log
+[PANDAS] 25×: completado · 11.5 s · memoria pico del proceso 1368 MB
+
+[PANDAS] factor 50× → /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/pandas_x50.log
+[PANDAS] 50×: completado · 25.5 s · memoria pico del proceso 2560 MB
+
+[PANDAS] factor 75× → /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/pandas_x75.log
+[PANDAS] 75×: completado · 38.3 s · memoria pico del proceso 3939 MB
+
+[PANDAS] factor 100× → /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/pandas_x100.log
+[PANDAS] 100×: completado · 52.9 s · memoria pico del proceso 5253 MB
+
+[PANDAS] factor 150× → /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/evidencia/benchmark/logs/pandas_x150.log
+[PANDAS] 150×: MemoryError: no cabe en memoria · 29.3 s · memoria pico del proceso 5503 MB
+[PANDAS] Se encontró el límite de memoria de esta máquina; se detiene la prueba.

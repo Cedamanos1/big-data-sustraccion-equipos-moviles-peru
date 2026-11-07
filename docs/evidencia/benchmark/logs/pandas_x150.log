@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "/home/olazabal/big-data-sustraccion-equipos-moviles-peru/src/benchmark_pandas.py", line 132, in <module>
+    un_factor(a.un_factor, a.limite)
+  File "/home/olazabal/big-data-sustraccion-equipos-moviles-peru/src/benchmark_pandas.py", line 54, in un_factor
+    rec["fecha_mes"] = pd.to_datetime(rec.mes.str[:10], errors="coerce")
+                                      ~~~~~~~~~~~^^^^^
+  File "/home/olazabal/BigData_UPAO/bigdata_env/lib/python3.11/site-packages/pandas/core/strings/accessor.py", line 254, in __getitem__
+    result = self._data.array._str_getitem(key)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/olazabal/BigData_UPAO/bigdata_env/lib/python3.11/site-packages/pandas/core/strings/object_array.py", line 46, in _str_getitem
+    return self._str_slice(start=key.start, stop=key.stop, step=key.step)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/olazabal/BigData_UPAO/bigdata_env/lib/python3.11/site-packages/pandas/core/strings/object_array.py", line 337, in _str_slice
+    return self._str_map(lambda x: x[obj])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/olazabal/BigData_UPAO/bigdata_env/lib/python3.11/site-packages/pandas/core/arrays/string_.py", line 472, in _str_map
+    return self._str_map_nan_semantics(f, na_value=na_value, dtype=dtype)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/olazabal/BigData_UPAO/bigdata_env/lib/python3.11/site-packages/pandas/core/arrays/string_.py", line 599, in _str_map_nan_semantics
+    return self._str_map_str_or_object(dtype, na_value, arr, f, mask)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/olazabal/BigData_UPAO/bigdata_env/lib/python3.11/site-packages/pandas/core/arrays/string_.py", line 528, in _str_map_str_or_object
+    result = lib.map_infer_mask(
+             ^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/lib.pyx", line 3023, in pandas._libs.lib.map_infer_mask
+  File "/home/olazabal/BigData_UPAO/bigdata_env/lib/python3.11/site-packages/pandas/core/strings/object_array.py", line 337, in <lambda>
+    return self._str_map(lambda x: x[obj])
+                                   ~^^^^^
+MemoryError

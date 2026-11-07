@@ -1,0 +1,91 @@
+{
+  "herramienta": "pandas (en memoria, un solo proceso)",
+  "ram_total_mb": 6732,
+  "limite_memoria_proceso_mb": 5722,
+  "factores": [
+    {
+      "factor": 1,
+      "estado": "completado",
+      "duracion_proceso_s": 3.0,
+      "rss_pico_mb": 121,
+      "filas_entrada": 276008,
+      "filas_gold": 712,
+      "tiempo_lectura_replica_s": 1.1,
+      "tiempo_silver_s": 0.7,
+      "tiempo_gold_s": 0.2,
+      "tiempo_total_s": 2.0,
+      "rss_proceso_mb": 144
+    },
+    {
+      "factor": 10,
+      "estado": "completado",
+      "duracion_proceso_s": 7.1,
+      "rss_pico_mb": 528,
+      "filas_entrada": 2760080,
+      "filas_gold": 7120,
+      "tiempo_lectura_replica_s": 1.4,
+      "tiempo_silver_s": 4.3,
+      "tiempo_gold_s": 0.4,
+      "tiempo_total_s": 6.2,
+      "rss_proceso_mb": 594
+    },
+    {
+      "factor": 25,
+      "estado": "completado",
+      "duracion_proceso_s": 11.5,
+      "rss_pico_mb": 1368,
+      "filas_entrada": 6900200,
+      "filas_gold": 17800,
+      "tiempo_lectura_replica_s": 1.2,
+      "tiempo_silver_s": 8.4,
+      "tiempo_gold_s": 1.0,
+      "tiempo_total_s": 10.6,
+      "rss_proceso_mb": 1235
+    },
+    {
+      "factor": 50,
+      "estado": "completado",
+      "duracion_proceso_s": 25.5,
+      "rss_pico_mb": 2560,
+      "filas_entrada": 13800400,
+      "filas_gold": 35600,
+      "tiempo_lectura_replica_s": 1.8,
+      "tiempo_silver_s": 20.3,
+      "tiempo_gold_s": 2.1,
+      "tiempo_total_s": 24.2,
+      "rss_proceso_mb": 2338
+    },
+    {
+      "factor": 75,
+      "estado": "completado",
+      "duracion_proceso_s": 38.3,
+      "rss_pico_mb": 3939,
+      "filas_entrada": 20700600,
+      "filas_gold": 53400,
+      "tiempo_lectura_replica_s": 2.3,
+      "tiempo_silver_s": 30.3,
+      "tiempo_gold_s": 3.3,
+      "tiempo_total_s": 36.0,
+      "rss_proceso_mb": 3464
+    },
+    {
+      "factor": 100,
+      "estado": "completado",
+      "duracion_proceso_s": 52.9,
+      "rss_pico_mb": 5253,
+      "filas_entrada": 27600800,
+      "filas_gold": 71200,
+      "tiempo_lectura_replica_s": 3.2,
+      "tiempo_silver_s": 39.2,
+      "tiempo_gold_s": 8.0,
+      "tiempo_total_s": 50.4,
+      "rss_proceso_mb": 4595
+    },
+    {
+      "factor": 150,
+      "estado": "MemoryError: no cabe en memoria",
+      "duracion_proceso_s": 29.3,
+      "rss_pico_mb": 5503
+    }
+  ]
+}

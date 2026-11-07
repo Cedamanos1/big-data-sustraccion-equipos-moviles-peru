@@ -1,0 +1,1 @@
+[RESULTADO] {'factor': 100, 'filas_entrada': 27600800, 'filas_gold': 71200, 'tiempo_lectura_replica_s': 3.2, 'tiempo_silver_s': 39.2, 'tiempo_gold_s': 8.0, 'tiempo_total_s': 50.4, 'rss_proceso_mb': 4595}

@@ -1,0 +1,10 @@
+{
+  "factor": 50,
+  "filas_entrada": 13800400,
+  "filas_gold": 35600,
+  "tiempo_lectura_replica_s": 1.8,
+  "tiempo_silver_s": 20.3,
+  "tiempo_gold_s": 2.1,
+  "tiempo_total_s": 24.2,
+  "rss_proceso_mb": 2338
+}
