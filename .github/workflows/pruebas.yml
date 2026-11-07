@@ -1,0 +1,27 @@
+# Integración continua: en cada push o pull request a main, GitHub ejecuta
+# las pruebas de reglas y verifica que todo el código fuente compile.
+name: Pruebas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verificar sintaxis de src/ y tests/
+        run: python -m compileall -q src tests
+
+      - name: Ejecutar pruebas de reglas de normalización
+        run: python -m unittest discover -s tests -v

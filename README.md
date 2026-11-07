@@ -1,4 +1,5 @@
 # Big Data de la sustracción de equipos móviles en el Perú (OSIPTEL) — v2
+![Pruebas](https://github.com/Cedamanos1/big-data-sustraccion-equipos-moviles-peru/actions/workflows/pruebas.yml/badge.svg)
 
 Proyecto integrador · Big Data y Analítica de Datos · UPAO 2026-20 · Grupo 11
 Ruta de despliegue: **On-premise** (Apache Spark 3.5.1 en VM local, JupyterLab; HDFS opcional).
