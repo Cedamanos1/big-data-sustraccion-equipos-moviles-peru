@@ -163,11 +163,17 @@ def escalabilidad(factores, hasta_fallar, timeout_min):
     resumen = {"maquina": _info_maquina(), "spark_driver_memory": os.environ.get("SPARK_DRIVER_MEMORY", "por defecto (1g)"),
                "nota": "réplicas solo para medir rendimiento; cada factor en un proceso aparte", "factores": []}
     salida = EVIDENCIA / "escalabilidad.json"
+    previos = []
+    if salida.exists():   # conserva los factores ya medidos que no se vuelven a correr
+        previos = [f for f in json.loads(salida.read_text(encoding="utf-8")).get("factores", []) if f["factor"] not in factores]
+    resumen["factores"] = previos
     for k in factores:
         log = BENCH / "logs" / f"x{k}.log"
         muestras = []
         print(f"\n[ESCALABILIDAD] factor {k}× → log en {log}", flush=True)
         t0 = time.perf_counter()
+        csv_mem = open(BENCH / "logs" / f"memoria_x{k}.csv", "w", encoding="utf-8")
+        csv_mem.write("segundo,ram_sistema_mb,swap_mb,rss_proceso_mb\n")
         with open(log, "w", encoding="utf-8") as fh:
             p = subprocess.Popen([sys.executable, os.path.join(SRC, "benchmark.py"), "--un-factor", str(k)],
                                  stdout=fh, stderr=subprocess.STDOUT)
@@ -180,14 +186,14 @@ def escalabilidad(factores, hasta_fallar, timeout_min):
                 except psutil.Error:
                     rss = 0
                 muestras.append((round(time.perf_counter() - t0, 1), round(vm.used / 1e6), round(sw.used / 1e6), round(rss / 1e6)))
+                csv_mem.write(",".join(map(str, muestras[-1])) + "\n"); csv_mem.flush(); os.fsync(csv_mem.fileno())
                 if time.perf_counter() - t0 > timeout_min * 60:
                     p.kill(); estado = f"detenido por tiempo (> {timeout_min} min)"
                     break
                 time.sleep(2)
             rc = p.wait()
         dur = round(time.perf_counter() - t0, 1)
-        with open(BENCH / "logs" / f"memoria_x{k}.csv", "w", encoding="utf-8") as f:
-            f.write("segundo,ram_sistema_mb,swap_mb,rss_proceso_mb\n" + "\n".join(",".join(map(str, m)) for m in muestras))
+        csv_mem.close()
         texto = log.read_text(encoding="utf-8", errors="ignore")
         if estado is None:
             if rc == 0:
@@ -208,6 +214,7 @@ def escalabilidad(factores, hasta_fallar, timeout_min):
         if rc == 0 and r.exists():
             fila.update(json.loads(r.read_text(encoding="utf-8")))
         resumen["factores"].append(fila)
+        resumen["factores"].sort(key=lambda f: f["factor"])
         ok = [f for f in resumen["factores"] if f["estado"] == "completado"]
         if ok:
             t1 = ok[0]["tiempo_total_s"]
