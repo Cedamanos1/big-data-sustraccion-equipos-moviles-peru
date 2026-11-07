@@ -1,0 +1,16 @@
+{
+  "fecha": "2026-11-06T19:40:11",
+  "lake": "file:///home/olazabal/big-data-sustraccion-equipos-moviles-peru/data/lake",
+  "spark": "3.5.1",
+  "python": "3.11.2",
+  "maquina": "Debian",
+  "cpu": 4,
+  "filas_fuente": 276008,
+  "tiempos_s": {
+    "ingesta": 23.36,
+    "silver": 53.38,
+    "gold": 13.29,
+    "modelo": 36.78,
+    "total": 126.81
+  }
+}

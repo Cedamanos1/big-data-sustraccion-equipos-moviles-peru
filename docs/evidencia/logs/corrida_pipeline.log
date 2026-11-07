@@ -1,0 +1,41 @@
+26/11/06 19:37:54 WARN Utils: Your hostname, Debian resolves to a loopback address: 127.0.1.1; using 10.0.2.15 instead (on interface enp0s3)
+26/11/06 19:37:54 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/11/06 19:37:56 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[Stage 0:>                                                          (0 + 1) / 1]                                                                                [Stage 3:>                                                          (0 + 1) / 1]                                                                                [Stage 12:>                                                         (0 + 1) / 1]                                                                                [Stage 15:>                                                         (0 + 1) / 1]                                                                                [Stage 18:>                                                         (0 + 1) / 1]                                                                                [Stage 25:>                                                         (0 + 2) / 2]                                                                                [Stage 52:>                                                         (0 + 1) / 1]                                                                                [Stage 53:>                                                         (0 + 1) / 1]                                                                                [Stage 54:>                                                         (0 + 2) / 2][Stage 56:>                                                         (0 + 1) / 1]                                                                                [Stage 60:>                                                         (0 + 1) / 1]                                                                                26/11/06 19:39:17 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+[Stage 61:>                                                         (0 + 2) / 2]                                                                                [Stage 68:>                                                         (0 + 4) / 4][Stage 68:=============>    (3 + 1) / 4][Stage 70:>                 (0 + 1) / 1][Stage 68:===========================================>              (3 + 1) / 4][Stage 75:>                                                         (0 + 1) / 1]                                                                                [INGESTA] 276,008 filas en 23.36 s
+[SILVER] robos: leídos=1,698 aceptados=1,698 rechazados=0
+[SILVER] reclamos: leídos=222,944 aceptados=222,944 rechazados=0
+[SILVER] cobertura: leídos=51,366 aceptados=51,366 rechazados=0
+[ESCRITURA] silver/robos
+[ESCRITURA] silver/reclamos
+[ESCRITURA] silver/cobertura
+[ESCRITURA] quarantine/robos
+[ESCRITURA] quarantine/reclamos
+[ESCRITURA] quarantine/cobertura
+[ESCRITURA] gold/gold_operadora_mes
+[ESCRITURA] gold/gold_depto_operadora_202303
+[ESCRITURA] gold/dim_tiempo
+[ESCRITURA] gold/dim_operadora
+[ESCRITURA] gold/dim_departamento
+[PRONÓSTICO] [{'fecha_mes': datetime.date(2026, 2, 1), 'operadora': 'BITEL', 'ultimo_observado': 24020.0, 'pronostico': 22803.0, 'mae_prueba': 2320.8, 'variacion_pct': -5.1}, {'fecha_mes': datetime.date(2026, 2, 1), 'operadora': 'CLARO', 'ultimo_observado': 37716.0, 'pronostico': 36933.0, 'mae_prueba': 2202.4, 'variacion_pct': -2.1}, {'fecha_mes': datetime.date(2026, 2, 1), 'operadora': 'ENTEL', 'ultimo_observado': 29706.0, 'pronostico': 27956.0, 'mae_prueba': 1056.0, 'variacion_pct': -5.9}, {'fecha_mes': datetime.date(2026, 2, 1), 'operadora': 'MOVISTAR', 'ultimo_observado': 25433.0, 'pronostico': 24118.0, 'mae_prueba': 1251.9, 'variacion_pct': -5.2}]
+[MODELO H1] ingenuo: MAE=1,957 MAPE=7.03% | ingenuo_estacional: MAE=2,185 MAPE=7.9% | ridge: MAE=1,832 MAPE=6.63% | random_forest: MAE=1,737 MAPE=6.32% | gradient_boosting: MAE=1,708 MAPE=6.1%
+[MODELO H3] ingenuo: MAE=2,378 MAPE=8.28% | ingenuo_estacional: MAE=3,326 MAPE=12.01% | ridge: MAE=2,643 MAPE=9.29% | random_forest: MAE=2,193 MAPE=7.76% | gradient_boosting: MAE=2,182 MAPE=7.67%
+[TABLERO] /home/olazabal/big-data-sustraccion-equipos-moviles-peru/docs/index.html (corte 2026-01, pronóstico 2026-02)
+{
+  "fecha": "2026-11-06T19:40:11",
+  "lake": "file:///home/olazabal/big-data-sustraccion-equipos-moviles-peru/data/lake",
+  "spark": "3.5.1",
+  "python": "3.11.2",
+  "maquina": "Debian",
+  "cpu": 4,
+  "filas_fuente": 276008,
+  "tiempos_s": {
+    "ingesta": 23.36,
+    "silver": 53.38,
+    "gold": 13.29,
+    "modelo": 36.78,
+    "total": 126.81
+  }
+}

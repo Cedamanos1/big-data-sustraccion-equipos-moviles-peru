@@ -1,0 +1,28 @@
+{
+  "fecha_ejecucion": "2026-11-06T19:38:02",
+  "fuentes": {
+    "robos": {
+      "archivo": "9.1. EQUIPOS SUSTRAIDOS PERDIDOS O RECUPERADOS.xlsx",
+      "formato": "XLSX",
+      "bytes": 69497,
+      "sha256": "db9f686cb7fd6e656ab6c74345fe6d70450890a8d7118144034116f8d924808b",
+      "filas": 1698
+    },
+    "reclamos": {
+      "archivo": "10.1 RECLAMOS PRESENTADOS.xlsx",
+      "formato": "XLSX",
+      "bytes": 7155242,
+      "sha256": "4b27d6ff5cc6758cc08a5461b9b5e5f0a8fe5085797d69e0a111bc602b5689f3",
+      "filas": 222944
+    },
+    "cobertura": {
+      "archivo": "Cobertura móvil por empresa operadora.csv",
+      "formato": "CSV ;",
+      "bytes": 7590550,
+      "sha256": "0e2c5336ca94ad9ab2e94dd1ae2d7a7a487ffda47c54e93267db9f0df575f2f0",
+      "filas": 51366
+    }
+  },
+  "filas_totales": 276008,
+  "tiempo_ingesta_s": 23.36
+}
