@@ -16,3 +16,6 @@ __pycache__/
 spark-warehouse/
 metastore_db/
 derby.log
+
+# carpeta de la demostración incremental
+demo/
