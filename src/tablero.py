@@ -78,11 +78,11 @@ def generar(g, j, evid: Path, destino: Path, manifiesto=None):
 
 if __name__ == "__main__":
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from config import ruta, EVIDENCIA, ROOT
+    from config import ruta, EVIDENCIA, TABLERO
     from pipeline import spark_session
     spark = spark_session("OSIPTEL_tablero")
     man = EVIDENCIA / "manifiesto.json"
     generar(spark.read.parquet(ruta("gold", "gold_operadora_mes")).toPandas(),
             spark.read.parquet(ruta("gold", "gold_depto_operadora_202303")).toPandas(),
-            EVIDENCIA, ROOT / "docs" / "index.html",
+            EVIDENCIA, TABLERO,
             json.loads(man.read_text(encoding="utf-8")).get("fuentes") if man.exists() else None)

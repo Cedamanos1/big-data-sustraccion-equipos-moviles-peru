@@ -7,12 +7,16 @@ import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "data" / "raw"                       # originales intactos (no se versionan)
-STAGING = ROOT / "data" / "staging"                # XLSX convertidos a CSV UTF-8 para Spark
-EVIDENCIA = ROOT / "docs" / "evidencia"            # JSON de calidad, tiempos, métricas
+# HOME = carpeta de trabajo con data/ y docs/. Por defecto es la raíz del repositorio; para una demostración
+# aislada (sin tocar los datos ni la evidencia reales) se apunta a otra: export OSIPTEL_HOME=/ruta/demo
+HOME = Path(os.environ.get("OSIPTEL_HOME", ROOT)).resolve()
+RAW = HOME / "data" / "raw"                       # originales intactos (no se versionan)
+STAGING = HOME / "data" / "staging"                # XLSX convertidos a CSV UTF-8 para Spark
+EVIDENCIA = HOME / "docs" / "evidencia"            # JSON de calidad, tiempos, métricas
+TABLERO = HOME / "docs" / "index.html"             # capa de consumo
 
 # Destino del lake: local por defecto; p. ej. hdfs:///user/grupo11/osiptel o s3a://bucket/osiptel
-LAKE = os.environ.get("OSIPTEL_LAKE_URI", (ROOT / "data" / "lake").as_uri())
+LAKE = os.environ.get("OSIPTEL_LAKE_URI", (HOME / "data" / "lake").as_uri())
 
 FUENTES = {
     "robos": RAW / "robos",          # F1 · 9.1. EQUIPOS SUSTRAIDOS PERDIDOS O RECUPERADOS.xlsx
