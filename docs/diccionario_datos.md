@@ -69,7 +69,7 @@ Reglas de rechazo: `ubigeo_invalido` (no tiene 10 dígitos) · `bandera_fuera_do
 
 ## 2. GOLD (capa de consumo)
 
-### 2.1 `gold/gold_operadora_mes` (particionada por `anio`): hechos de J1
+### 2.1 `gold/gold_operadora_mes` (particionada por `fecha_mes`, una partición por mes): hechos de J1
 `silver/robos` (pivotado por estado) **FULL OUTER JOIN** con los reclamos móviles agregados, por `operadora` + `fecha_mes`.
 Grano: **operadora × mes**.
 
@@ -104,7 +104,23 @@ Grano: **departamento × operadora**.
 | `pct_ccpp_4g` | double | `100 × ccpp_4g / ccpp` | 45.411 |
 | `origen_join` | string | `ambas` · `solo_reclamos` | ambas |
 
-### 2.3 Dimensiones
+### 2.3 Bitácora de cargas `_control/cargas`
+Una fila por fuente y por corrida del pipeline. Permite saber qué entró, cuándo y cuánto, y decide si una fuente cambió.
+
+| Columna | Tipo | Definición | Ejemplo |
+|---|---|---|---|
+| `lote`, `fecha_carga` | string | marca de tiempo de la corrida | 2026-11-20T10:05:12 |
+| `fuente` | string | `robos`, `reclamos` o `cobertura` | robos |
+| `modo` | string | `completa` · `incremental` · `sin_cambios` | incremental |
+| `sha256` | string | huella del archivo fuente en esa corrida | db9f686c… |
+| `filas_fuente` | long | filas del archivo fuente | 1 698 |
+| `filas_nuevas` | long | filas de meses nuevos que se procesaron | 71 |
+| `aceptados`, `rechazados` | long | resultado de las reglas sobre las filas nuevas | 71 · 0 |
+| `meses_nuevos` | long | cantidad de meses nuevos | 5 |
+| `mes_min`, `mes_max` | string | rango de los meses nuevos | 2025-09-01 · 2026-01-01 |
+| `meses_lista` | string | meses nuevos (AAAA-MM separados por coma) | 2025-09,2025-10,… |
+
+### 2.4 Dimensiones
 
 | Tabla | Clave | Columnas |
 |---|---|---|

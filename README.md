@@ -46,13 +46,44 @@ db9f686cb7fd6e656ab6c74345fe6d70450890a8d7118144034116f8d924808b  9.1. EQUIPOS S
 
 ```bash
 python -m unittest discover -s tests -v              # 1. pruebas de reglas (sin Spark)
-python src/pipeline.py                                # 2. RAW→STAGING→SILVER→GOLD + modelo + tablero
+python src/pipeline.py                                # 2. INCREMENTAL: RAW→STAGING→SILVER→GOLD + modelo + tablero (solo meses nuevos)
 python src/figuras.py                                 # 3. figuras del EDA (PNG para el informe)
 python src/benchmark.py --optimizacion                # 4. medición antes/después (§3.6)
 export SPARK_DRIVER_MEMORY=3g                         #    (≈ 70 % de la RAM de la VM)
 python src/benchmark.py --escalabilidad               # 5. 1×, 10×, 100×, 150×, 200×, 300× hasta que falle (§3.7)
 python src/benchmark_pandas.py                        # 6. contraste: el mismo pipeline en pandas hasta su límite de memoria
 python src/graficar_benchmark.py                      # 7. figuras de rendimiento para el informe
+```
+
+### 3.1 Carga incremental (cómo entran datos nuevos)
+
+El pipeline es **incremental por defecto**: si el lake ya tiene bitácora de cargas (`<lake>/_control/cargas`), solo procesa
+los meses que aún no están en SILVER, los **anexa** sin tocar lo anterior y recalcula en GOLD únicamente los meses afectados
+(una partición por mes). Con la primera corrida, o si el lake viene de una versión anterior, hace la carga inicial completa.
+
+```bash
+python src/pipeline.py              # incremental (o carga inicial si el lake está vacío)
+python src/pipeline.py --estado     # bitácora de cargas y contenido de cada capa
+python src/pipeline.py --completa   # reconstruye todo desde RAW (sobrescribe SILVER y GOLD)
+```
+
+Cómo decide qué procesar: (1) si el archivo fuente tiene la misma huella SHA-256 que en la última carga, esa fuente no se toca;
+(2) si cambió, se descartan las filas de meses que ya están en SILVER **antes** de aplicar las reglas; (3) SILVER y QUARANTINE se
+anexan; (4) GOLD se recalcula solo para los meses donde SILVER y GOLD difieren (nuevos, o que cambiaron de categoría, por ejemplo
+un mes que pasa de «solo_robos» a «ambas» cuando llegan sus reclamos); (5) se registra la carga. Si una corrida se interrumpe,
+la siguiente se repara sola. Limitación: no detecta correcciones de OSIPTEL sobre meses ya cargados (para eso, `--completa`).
+
+**Demostración con datos reales** (carpeta aislada `demo/`; no toca los datos ni la evidencia reales):
+
+```bash
+export OSIPTEL_HOME="$PWD/demo"
+python src/demo_incremental.py preparar      # F1 hasta ago-2025 y F2 hasta jul-2025
+python src/pipeline.py                       # carga inicial
+python src/demo_incremental.py llegan-datos  # llegan los archivos completos (F1 hasta ene-2026, F2 hasta oct-2025)
+python src/pipeline.py                       # INCREMENTAL: solo procesa los meses nuevos y actualiza pronóstico y tablero
+python src/pipeline.py                       # sin cambios: no procesa nada
+python src/pipeline.py --estado
+unset OSIPTEL_HOME                           # volver a trabajar con los datos reales
 ```
 
 O bien abrir `notebooks/Pipeline_OSIPTEL_v2.ipynb` en JupyterLab y ejecutar las celdas en orden.
@@ -87,9 +118,10 @@ data/staging/<fuente>/*.csv             XLSX convertidos a CSV UTF-8
 <lake>/silver/reclamos     (part. anio)        fecha_mes, operadora, razon_social, departamento, servicio, materia, forma, reclamos, es_movil
 <lake>/silver/cobertura    (part. operadora)   periodo_fecha, operadora, departamento, ubigeo_ccpp, tiene_2g..5g, estaciones_4g
 <lake>/quarantine/<fuente>                     filas rechazadas + motivo_rechazo
-<lake>/gold/gold_operadora_mes (part. anio)    hechos: sustraidos, recuperados, perdidos, reclamos_moviles, tasa_recuperacion_pct, origen_join
+<lake>/gold/gold_operadora_mes (part. fecha_mes) hechos: sustraidos, recuperados, perdidos, reclamos_moviles, tasa_recuperacion_pct, origen_join
 <lake>/gold/gold_depto_operadora_202303        hechos: ccpp, ccpp_4g, pct_ccpp_4g, reclamos_moviles, reclamos_calidad, origen_join
 <lake>/gold/dim_tiempo | dim_operadora | dim_departamento
+<lake>/_control/cargas                          bitácora de cargas (una fila por fuente y corrida: modo, filas nuevas, meses)
 <lake>/_benchmark/                              réplicas SOLO para medir rendimiento (borrar con --limpiar)
 docs/evidencia/                                 manifiesto, calidad, corrida, modelo, optimización, escalabilidad
 ```
@@ -101,6 +133,8 @@ docs/evidencia/                                 manifiesto, calidad, corrida, mo
 | `src/config.py` | rutas y parámetros; único lugar que cambia al migrar de disco local a HDFS/S3 |
 | `src/reglas.py` | reglas de normalización en Python puro (operadoras, departamentos, estados) |
 | `src/ingesta.py` | RAW → STAGING, manifiesto SHA-256 |
+| `src/incremental.py` | carga incremental: meses nuevos, bitácora de cargas, SILVER por anexión, GOLD por meses afectados |
+| `src/demo_incremental.py` | prepara la demostración con datos reales (llegada de meses nuevos) en `demo/` |
 | `src/transform.py` | STAGING → SILVER/QUARANTINE con PySpark (reglas de calidad) |
 | `src/gold.py` | JOIN entre fuentes y modelo dimensional |
 | `src/modelo.py` | modelo base (ingenuo) y definitivo (Gradient Boosting), evaluación temporal |

@@ -6,8 +6,8 @@ Corrida de referencia: 06/11/2026, VM Debian 12 · 4 vCPU · 6.7 GB de RAM · Sp
 | Archivo | Qué demuestra | Lo genera | Sección del informe |
 |---|---|---|---|
 | `manifiesto.json` | Huella SHA-256, filas y fecha de cada archivo fuente: los datos usados son los oficiales y no se alteraron | `src/ingesta.py` | §2 Datos |
-| `calidad.json` | Filas leídas, aceptadas y rechazadas por fuente; resultado de los JOIN (`ambas` / `solo_…`); conservación de totales SILVER = GOLD (15 836 038) | `src/pipeline.py` | §3 Calidad |
-| `corrida.json` | Máquina, versión de Spark y tiempo de cada etapa del pipeline | `src/pipeline.py` | §3 |
+| `calidad.json` | Modo de la corrida (`completa` o `incremental`); filas leídas, aceptadas y rechazadas por fuente (en una corrida incremental, solo las filas nuevas); `acumulado` con las filas de cada tabla SILVER; resultado de los JOIN (`ambas` / `solo_…`); conservación de totales SILVER = GOLD | `src/pipeline.py` | §3 Calidad |
+| `corrida.json` | Modo, máquina, versión de Spark, tiempo de cada etapa, qué fuentes cambiaron, cuántos meses nuevos entraron y qué meses de GOLD se recalcularon | `src/pipeline.py` | §3 |
 | `modelo_metricas.json` | MAE, MAPE, MASE y sesgo de los modelos (ingenuo, ingenuo estacional, Ridge, Random Forest, Gradient Boosting) en H1 y H3, con el periodo de entrenamiento y de prueba | `src/modelo.py` | §4 Modelo |
 | `predicciones_prueba_H1.csv`, `predicciones_prueba_H3.csv` | Predicción de cada modelo frente al valor real, mes a mes, en el periodo de prueba | `src/modelo.py` | §4 |
 | `pronostico_mes_siguiente.csv` | Pronóstico de sustracciones del mes siguiente por operadora | `src/modelo.py` | §4 y tablero |
