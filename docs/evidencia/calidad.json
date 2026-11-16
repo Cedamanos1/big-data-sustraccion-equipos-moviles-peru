@@ -1,33 +1,21 @@
 {
+  "modo": "incremental",
   "robos": {
     "fuente": "robos",
-    "leidos": 1698,
-    "aceptados": 1698,
-    "rechazados": 0,
-    "pct_validos": 100.0,
-    "motivos": {}
+    "sin_cambios": true
   },
   "reclamos": {
     "fuente": "reclamos",
-    "leidos": 222944,
-    "aceptados": 222944,
-    "rechazados": 0,
-    "pct_validos": 100.0,
-    "sin_departamento_marcados": 17475
+    "sin_cambios": true
   },
   "cobertura": {
     "fuente": "cobertura",
-    "leidos": 51366,
-    "aceptados": 51366,
-    "rechazados": 0,
-    "pct_validos": 100.0,
-    "departamentos_crudos": 45,
-    "departamentos_normalizados": 24
+    "sin_cambios": true
   },
   "join_operadora_mes": {
+    "solo_robos": 25,
     "ambas": 519,
-    "solo_reclamos": 61,
-    "solo_robos": 25
+    "solo_reclamos": 61
   },
   "join_depto_operadora_202303": {
     "solo_reclamos": 11,
@@ -38,5 +26,10 @@
     "silver": 15836038,
     "gold": 15836038,
     "ok": true
+  },
+  "acumulado": {
+    "robos": 1569,
+    "reclamos": 222944,
+    "cobertura": 51366
   }
 }

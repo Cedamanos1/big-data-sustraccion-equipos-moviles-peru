@@ -1,0 +1,5 @@
+operadora,corte,sus12,rec12,sus_prev12,tasa12,var_anual,mediana_tasa,brecha_vs_mediana,potencial,estado
+BITEL,2026-01-01,281717,27603,257663,9.80,9.3,7.65,-2.14,0,Sobre la mediana
+CLARO,2026-01-01,491279,43697,562343,8.89,-12.6,7.65,-1.24,0,Sobre la mediana
+ENTEL,2026-01-01,356817,22887,381645,6.41,-6.5,7.65,1.24,4425,Prioritaria
+MOVISTAR,2026-01-01,326739,16431,352017,5.03,-7.2,7.65,2.63,8579,Prioritaria
