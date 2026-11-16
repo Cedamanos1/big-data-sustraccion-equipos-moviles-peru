@@ -17,7 +17,29 @@ OPS = ["BITEL", "CLARO", "ENTEL", "MOVISTAR"]
 PLANTILLA = Path(__file__).resolve().parent / "tablero_plantilla.html"
 
 
-def construir_datos(g: pd.DataFrame, j: pd.DataFrame, evid: Path, manifiesto: dict | None = None) -> dict:
+def _nombre_depto(dep: str) -> str:
+    return dep.title().replace(" Y ", " y ").replace(" De ", " de ")
+
+
+def _operadoras_desde_sql(kpi: pd.DataFrame, prox: pd.DataFrame) -> list:
+    """Operadoras tomadas de la tabla analítica an_kpi_operadora (calculada con Spark SQL) + el pronóstico."""
+    return [{
+        "op": r.operadora, "sus12": int(r.sus12), "rec12": int(r.rec12), "tasa12": float(r.tasa12),
+        "var_anual": float(r.var_anual), "brecha_vs_mediana": float(r.brecha_vs_mediana),
+        "potencial": int(r.potencial), "estado": r.estado,
+        "pron": int(prox.loc[r.operadora, "pronostico"]), "pron_mae": int(round(prox.loc[r.operadora, "mae_prueba"])),
+        "pron_var": float(prox.loc[r.operadora, "variacion_pct"]),
+    } for r in kpi.itertuples()]
+
+
+def _deptos_desde_sql(dc: pd.DataFrame) -> list:
+    return [{"d": _nombre_depto(r.departamento), "recl": int(r.reclamos_moviles), "pct_cal": float(r.pct_calidad),
+             "pct4g": None if pd.isna(r.pct_4g) else float(r.pct_4g)} for r in dc.itertuples() if r.reclamos_moviles > 0]
+
+
+def construir_datos(g: pd.DataFrame, j: pd.DataFrame, evid: Path, manifiesto: dict | None = None, an: dict | None = None) -> dict:
+    """Si `an` (tablas analíticas en pandas) viene dado, las operadoras y los departamentos salen de esas tablas
+    (Spark SQL) y el cálculo en pandas queda como reconciliación; sin `an` se usa el cálculo en pandas."""
     g = g.copy(); g["fecha_mes"] = pd.to_datetime(g["fecha_mes"])
     g4 = g[g.operadora.isin(OPS) & g.sustraidos.notna()].sort_values(["fecha_mes", "operadora"])
     ult = g4.fecha_mes.max()
@@ -50,9 +72,18 @@ def construir_datos(g: pd.DataFrame, j: pd.DataFrame, evid: Path, manifiesto: di
     prueba = [{"m": r.fecha_mes.strftime("%Y-%m"), "op": r.operadora, "real": int(r.sustraidos),
                "gb": int(round(r.gradient_boosting)), "ing": int(round(r.ingenuo))} for r in pr.itertuples()]
     dd = j.groupby("departamento")[["ccpp", "ccpp_4g", "reclamos_moviles", "reclamos_calidad"]].sum()
-    deptos = [{"d": dep.title().replace(" Y ", " y ").replace(" De ", " de "), "recl": int(r.reclamos_moviles), "pct_cal": round(100 * r.reclamos_calidad / r.reclamos_moviles, 1),
+    deptos = [{"d": _nombre_depto(dep), "recl": int(r.reclamos_moviles), "pct_cal": round(100 * r.reclamos_calidad / r.reclamos_moviles, 1),
                "pct4g": round(100 * r.ccpp_4g / r.ccpp, 1) if r.ccpp else None}
               for dep, r in dd.iterrows() if r.reclamos_moviles > 0]
+    reconciliacion = None
+    if an is not None:
+        from analitica import reconciliar
+        sql_ops = _operadoras_desde_sql(an["an_kpi_operadora"], prox)
+        reconciliacion = reconciliar(operadoras, sql_ops)
+        reconciliacion["departamentos_pandas"] = len(deptos)
+        operadoras = sql_ops
+        deptos = _deptos_desde_sql(an["an_depto_calidad"])
+        reconciliacion["departamentos_sql"] = len(deptos)
     return {
         "generado": datetime.now().strftime("%d/%m/%Y %H:%M"), "corte": ult.strftime("%Y-%m"),
         "mes_pronostico": prox.fecha_mes.iloc[0].strftime("%Y-%m"),
@@ -63,16 +94,21 @@ def construir_datos(g: pd.DataFrame, j: pd.DataFrame, evid: Path, manifiesto: di
                 "mape": met["metricas"]["gradient_boosting"]["MAPE"], "mape_ing": met["metricas"]["ingenuo"]["MAPE"],
                 "mae": met["metricas"]["gradient_boosting"]["MAE"], "mae_ing": met["metricas"]["ingenuo"]["MAE"]},
         "operadoras": operadoras, "serie": serie, "prueba": prueba, "deptos": deptos,
-        "fuentes": manifiesto or {},
+        "fuentes": manifiesto or {}, "reconciliacion": reconciliacion,
     }
 
 
-def generar(g, j, evid: Path, destino: Path, manifiesto=None):
-    datos = construir_datos(g, j, evid, manifiesto)
+def generar(g, j, evid: Path, destino: Path, manifiesto=None, an: dict | None = None):
+    datos = construir_datos(g, j, evid, manifiesto, an)
     html = PLANTILLA.read_text(encoding="utf-8").replace("/*__DATOS__*/null", json.dumps(datos, ensure_ascii=False))
     destino.parent.mkdir(parents=True, exist_ok=True)
     destino.write_text(html, encoding="utf-8")
-    print(f"[TABLERO] {destino} (corte {datos['corte']}, pronóstico {datos['mes_pronostico']})")
+    origen = "tablas analíticas (Spark SQL)" if an is not None else "pandas"
+    print(f"[TABLERO] {destino} (corte {datos['corte']}, pronóstico {datos['mes_pronostico']}; operadoras y departamentos desde {origen})")
+    if datos.get("reconciliacion"):
+        r = datos["reconciliacion"]
+        print(f"[RECONCILIACIÓN] SQL vs pandas: {'OK' if r['ok'] else 'DIFERENCIAS ' + str(r['diferencias'])}")
+    return datos
     return datos
 
 

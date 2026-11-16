@@ -46,7 +46,9 @@ db9f686cb7fd6e656ab6c74345fe6d70450890a8d7118144034116f8d924808b  9.1. EQUIPOS S
 
 ```bash
 python -m unittest discover -s tests -v              # 1. pruebas de reglas (sin Spark)
-python src/pipeline.py                                # 2. INCREMENTAL: RAW→STAGING→SILVER→GOLD + modelo + tablero (solo meses nuevos)
+python src/pipeline.py                                # 2. INCREMENTAL: RAW→STAGING→SILVER→GOLD→tablas analíticas + modelo + tablero (solo meses nuevos)
+python src/analitica.py --consultas                   #    tablas analíticas (Spark SQL) y consultas de ejemplo
+python src/modelo_spark.py                            #    modelo con Spark MLlib y comparación con scikit-learn (~10 min)
 python src/figuras.py                                 # 3. figuras del EDA (PNG para el informe)
 python src/benchmark.py --optimizacion                # 4. medición antes/después (§3.6)
 export SPARK_DRIVER_MEMORY=3g                         #    (≈ 70 % de la RAM de la VM)
@@ -99,11 +101,25 @@ Para usar HDFS: `export OSIPTEL_LAKE_URI=hdfs:///user/grupo11/osiptel` antes de 
 | Punto de quiebre en memoria (pandas) | completa 100× (27.6 M); MemoryError a 150× (41.4 M) | `docs/evidencia/escalabilidad_pandas.json` |
 | Prioridad de supervisión | Movistar (5.0) y Entel (6.4) bajo la mediana de recuperación (7.7) | `docs/index.html` |
 
-## 5. Tablero (capa de consumo)
+## 5. Tablas analíticas y tablero (capa de consumo)
+
+**Tablas analíticas (Spark SQL).** Sobre GOLD, `src/analitica.py` crea cuatro tablas `an_*` consultables con SQL
+(se guardan en `<lake>/gold/` y como CSV en `docs/evidencia/analitica/`):
+
+| Tabla | Contenido |
+|---|---|
+| `an_kpi_operadora` | últimos 12 meses por operadora: tasa de recuperación, brecha vs. mediana, prioridad y potencial |
+| `an_serie_mensual` | serie mensual con media móvil de 3 meses y variación interanual (funciones de ventana) |
+| `an_resumen_anual` | totales por año y operadora (GOLD unido a `dim_tiempo`) |
+| `an_depto_calidad` | reclamos por departamento, % de calidad y % de centros poblados con 4G (mar-2023) |
+
+`python src/analitica.py --consultas` además responde cuatro preguntas de ejemplo con SQL (útil en la demostración).
 
 `docs/index.html` es el tablero interactivo para la Dirección de Fiscalización e Instrucción (DFI) de OSIPTEL:
 prioridades de supervisión por operadora, decisión sugerida, pronóstico del mes siguiente, verificación
 del modelo y reclamos por departamento. Se regenera en cada corrida (`src/tablero.py`) y no usa librerías externas.
+Sus operadoras y departamentos salen de las tablas analíticas; el cálculo equivalente en pandas se conserva solo para
+**reconciliar** (resultado en `calidad.json` → `reconciliacion_tablero_sql`).
 
 - Ver en local: abrir `docs/index.html` con doble clic.
 - Publicarlo: GitHub → Settings → Pages → *Deploy from a branch* → `main` / `/docs`. Queda en
@@ -121,6 +137,7 @@ data/staging/<fuente>/*.csv             XLSX convertidos a CSV UTF-8
 <lake>/gold/gold_operadora_mes (part. fecha_mes) hechos: sustraidos, recuperados, perdidos, reclamos_moviles, tasa_recuperacion_pct, origen_join
 <lake>/gold/gold_depto_operadora_202303        hechos: ccpp, ccpp_4g, pct_ccpp_4g, reclamos_moviles, reclamos_calidad, origen_join
 <lake>/gold/dim_tiempo | dim_operadora | dim_departamento
+<lake>/gold/an_kpi_operadora | an_serie_mensual | an_resumen_anual | an_depto_calidad   tablas analíticas (Spark SQL)
 <lake>/_control/cargas                          bitácora de cargas (una fila por fuente y corrida: modo, filas nuevas, meses)
 <lake>/_benchmark/                              réplicas SOLO para medir rendimiento (borrar con --limpiar)
 docs/evidencia/                                 manifiesto, calidad, corrida, modelo, optimización, escalabilidad
@@ -138,6 +155,8 @@ docs/evidencia/                                 manifiesto, calidad, corrida, mo
 | `src/transform.py` | STAGING → SILVER/QUARANTINE con PySpark (reglas de calidad) |
 | `src/gold.py` | JOIN entre fuentes y modelo dimensional |
 | `src/modelo.py` | modelo base (ingenuo) y definitivo (Gradient Boosting), evaluación temporal |
+| `src/modelo_spark.py` | mismo problema con Spark MLlib (GBT y Random Forest) y comparación con scikit-learn |
+| `src/analitica.py` | tablas analíticas `an_*` con Spark SQL, consultas de ejemplo y reconciliación con el tablero |
 | `src/figuras.py` | figuras del EDA para el informe |
 | `src/tablero.py` + `src/tablero_plantilla.html` | tablero interactivo `docs/index.html` |
 | `src/benchmark.py` | optimización (caché, broadcast, particionado; 6 repeticiones) y escalabilidad 1×→300× hasta la falla |

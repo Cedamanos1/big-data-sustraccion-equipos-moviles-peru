@@ -128,4 +128,19 @@ Una fila por fuente y por corrida del pipeline. Permite saber qué entró, cuán
 | `gold/dim_operadora` | `operadora_id` | `razones_sociales_historicas` (array), `tipo` (Operador móvil de red / OMV y otras) |
 | `gold/dim_departamento` | `departamento_id` | `ubigeos_dpto` (códigos de 2 dígitos del INEI) |
 
+### 2.5 Tablas analíticas (`gold/an_*`, construidas con Spark SQL por `src/analitica.py`)
+
+Se rehacen cuando llegan datos nuevos; también se exportan como CSV a `docs/evidencia/analitica/`. El tablero lee estas tablas.
+
+| Tabla | Granularidad | Columnas principales |
+|---|---|---|
+| `an_kpi_operadora` | operadora (4 marcas) | `corte`, `sus12`, `rec12`, `sus_prev12` (12 meses previos), `tasa12`, `var_anual`, `mediana_tasa`, `brecha_vs_mediana`, `potencial`, `estado` (Prioritaria si la brecha > 1 punto; En seguimiento si > 0; Sobre la mediana) |
+| `an_serie_mensual` | operadora + mes | `anio`, `trimestre`, `periodo_covid` (de `dim_tiempo`), `sustraidos`, `recuperados`, `reclamos_moviles`, `tasa_recuperacion_pct`, `sus_media_movil_3m`, `var_interanual_pct` |
+| `an_resumen_anual` | año + operadora | `sustraidos`, `recuperados`, `tasa_recuperacion_pct`, `reclamos_moviles` |
+| `an_depto_calidad` | departamento (mar-2023) | `ccpp`, `ccpp_4g`, `reclamos_moviles`, `reclamos_calidad`, `pct_calidad`, `pct_4g` |
+
+`potencial` = equipos adicionales que se recuperarían si la operadora alcanzara la mediana de recuperación
+(`max(0, mediana − tasa12) / 100 × sus12`). La reconciliación entre estas tablas y el cálculo en pandas queda en
+`calidad.json` (`reconciliacion_tablero_sql`).
+
 Los ejemplos numéricos son ilustrativos del formato. Las cifras reales están en `docs/evidencia/`.

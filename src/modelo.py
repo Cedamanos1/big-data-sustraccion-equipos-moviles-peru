@@ -1,8 +1,10 @@
 """Modelo base y modelo definitivo: pronóstico de equipos sustraídos por operadora.
 
 Entrada: GOLD gold_operadora_mes (≈ 600 filas). Se baja a pandas porque el conjunto
-agregado cabe holgadamente en memoria; entrenar en Spark ML no aportaría paralelismo útil
-(ver informe §1.7 y §4.3).
+agregado cabe holgadamente en memoria. Se EVALUÓ Spark MLlib (src/modelo_spark.py) con las mismas variables y la
+misma validación: desempeño equivalente (MAPE H1: 6.10 % scikit-learn vs. 6.25 % MLlib GBT; H3: 7.67 % vs. 7.42 %),
+sin ventaja que justifique reemplazar el modelo con tan pocos datos. Se conserva scikit-learn en producción y MLlib
+queda listo para el día en que GOLD crezca (evidencia: docs/evidencia/modelo_mllib_metricas.json).
 
 Formulación: se predice la VARIACIÓN RELATIVA respecto del último mes conocido
     y = sustraidos_t / sustraidos_{t-H} - 1

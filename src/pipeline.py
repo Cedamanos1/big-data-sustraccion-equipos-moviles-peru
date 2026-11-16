@@ -1,4 +1,4 @@
-"""Orquestador del pipeline: RAW -> STAGING -> SILVER/QUARANTINE -> GOLD -> modelo -> tablero (docs/index.html).
+"""Orquestador del pipeline: RAW -> STAGING -> SILVER/QUARANTINE -> GOLD -> tablas analíticas (Spark SQL) -> modelo -> tablero.
 
 Es INCREMENTAL por defecto: si el data lake ya tiene una bitácora de cargas (<lake>/_control/cargas), solo procesa los
 meses que aún no están en SILVER y recalcula en GOLD únicamente los meses afectados (ver src/incremental.py).
@@ -16,7 +16,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from config import EVIDENCIA, LAKE, TABLERO, ruta
-import ingesta, transform, gold, incremental
+import ingesta, transform, gold, incremental, analitica
 
 
 def spark_session(app="OSIPTEL_pipeline"):
@@ -136,6 +136,14 @@ def correr(spark, modelo=True, completa=False):
 
     j1, j2 = _controles(spark, calidad)
 
+    # capa analítica: tablas an_* con Spark SQL sobre GOLD (se rehacen solo si hubo datos nuevos o faltan)
+    if cambio_fuente or not analitica.existen(spark):
+        t = time.perf_counter()
+        analitica.construir(spark, EVIDENCIA / "analitica")
+        tiempos["analitica"] = round(time.perf_counter() - t, 2)
+    else:
+        print("[ANALÍTICA] sin datos nuevos: tablas analíticas vigentes")
+
     if modelo:
         import modelo as m, tablero
         pendiente = cambio_fuente or not TABLERO.exists() or not (EVIDENCIA / "pronostico_mes_siguiente.csv").exists()
@@ -144,7 +152,8 @@ def correr(spark, modelo=True, completa=False):
             g_pd, j2_pd = j1.toPandas(), j2.toPandas()
             m.ejecutar(g_pd, EVIDENCIA)
             tiempos["modelo"] = round(time.perf_counter() - t, 2)
-            tablero.generar(g_pd, j2_pd, EVIDENCIA, TABLERO, manifiesto["fuentes"])
+            datos = tablero.generar(g_pd, j2_pd, EVIDENCIA, TABLERO, manifiesto["fuentes"], an=analitica.leer(spark))
+            calidad["reconciliacion_tablero_sql"] = datos["reconciliacion"]
         else:
             print("[MODELO] sin datos nuevos: pronóstico y tablero vigentes")
 
