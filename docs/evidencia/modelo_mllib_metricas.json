@@ -1,0 +1,213 @@
+{
+  "spark": "3.5.1",
+  "resultados": {
+    "H1": {
+      "horizonte_meses": 1,
+      "n_train": 256,
+      "n_test": 76,
+      "hiperparametros": {
+        "mllib_gbt": {
+          "maxIter": 100,
+          "maxDepth": 2,
+          "stepSize": 0.1
+        },
+        "mllib_random_forest": {
+          "numTrees": 100,
+          "maxDepth": 6,
+          "minInstancesPerNode": 5
+        }
+      },
+      "metricas": {
+        "ingenuo": {
+          "MAE": 1956.8,
+          "MAPE": 7.03,
+          "MASE": 0.809,
+          "sesgo": 118.8,
+          "MAPE_por_operadora": {
+            "BITEL": 12.52,
+            "CLARO": 6.23,
+            "ENTEL": 4.44,
+            "MOVISTAR": 4.92
+          }
+        },
+        "mllib_gbt": {
+          "MAE": 1778.8,
+          "MAPE": 6.25,
+          "MASE": 0.735,
+          "sesgo": 127.3,
+          "MAPE_por_operadora": {
+            "BITEL": 10.8,
+            "CLARO": 5.44,
+            "ENTEL": 4.15,
+            "MOVISTAR": 4.6
+          }
+        },
+        "mllib_random_forest": {
+          "MAE": 1711.5,
+          "MAPE": 6.18,
+          "MASE": 0.707,
+          "sesgo": 160.9,
+          "MAPE_por_operadora": {
+            "BITEL": 11.59,
+            "CLARO": 5.0,
+            "ENTEL": 3.59,
+            "MOVISTAR": 4.54
+          }
+        }
+      },
+      "importancias_gbt": {
+        "var_lag2": 0.242,
+        "var_lag1": 0.192,
+        "var_estacional": 0.188,
+        "nivel_vs_media12": 0.179,
+        "mes": 0.136,
+        "var_lag3": 0.063,
+        "covid": 0.0
+      },
+      "MAE_prueba_por_operadora": {
+        "BITEL": 2192.3,
+        "CLARO": 2366.4,
+        "ENTEL": 1258.8,
+        "MOVISTAR": 1297.8
+      }
+    },
+    "H3": {
+      "horizonte_meses": 3,
+      "n_train": 248,
+      "n_test": 76,
+      "hiperparametros": {
+        "mllib_gbt": {
+          "maxIter": 100,
+          "maxDepth": 2,
+          "stepSize": 0.03
+        },
+        "mllib_random_forest": {
+          "numTrees": 100,
+          "maxDepth": 3,
+          "minInstancesPerNode": 3
+        }
+      },
+      "metricas": {
+        "ingenuo": {
+          "MAE": 2377.6,
+          "MAPE": 8.28,
+          "MASE": 0.733,
+          "sesgo": 345.4,
+          "MAPE_por_operadora": {
+            "BITEL": 14.11,
+            "CLARO": 7.3,
+            "ENTEL": 5.28,
+            "MOVISTAR": 6.44
+          }
+        },
+        "mllib_gbt": {
+          "MAE": 2105.4,
+          "MAPE": 7.42,
+          "MASE": 0.649,
+          "sesgo": 766.7,
+          "MAPE_por_operadora": {
+            "BITEL": 13.97,
+            "CLARO": 6.88,
+            "ENTEL": 3.63,
+            "MOVISTAR": 5.19
+          }
+        },
+        "mllib_random_forest": {
+          "MAE": 2185.5,
+          "MAPE": 7.81,
+          "MASE": 0.674,
+          "sesgo": 573.5,
+          "MAPE_por_operadora": {
+            "BITEL": 14.6,
+            "CLARO": 6.11,
+            "ENTEL": 4.22,
+            "MOVISTAR": 6.29
+          }
+        }
+      },
+      "importancias_gbt": {
+        "var_lag3": 0.253,
+        "mes": 0.185,
+        "var_estacional": 0.178,
+        "nivel_vs_media12": 0.172,
+        "var_lag4": 0.164,
+        "var_lag5": 0.048,
+        "covid": 0.0
+      },
+      "MAE_prueba_por_operadora": {
+        "BITEL": 2905.2,
+        "CLARO": 2991.0,
+        "ENTEL": 1095.9,
+        "MOVISTAR": 1429.4
+      }
+    }
+  },
+  "comparacion_con_sklearn": {
+    "H1": {
+      "modelos": {
+        "ingenuo": {
+          "MAE": 1956.8,
+          "MAPE": 7.03
+        },
+        "ingenuo_estacional": {
+          "MAE": 2185.2,
+          "MAPE": 7.9
+        },
+        "ridge": {
+          "MAE": 1831.8,
+          "MAPE": 6.63
+        },
+        "random_forest": {
+          "MAE": 1737.3,
+          "MAPE": 6.32
+        },
+        "gradient_boosting": {
+          "MAE": 1707.8,
+          "MAPE": 6.1
+        },
+        "mllib_gbt": {
+          "MAE": 1778.8,
+          "MAPE": 6.25
+        },
+        "mllib_random_forest": {
+          "MAE": 1711.5,
+          "MAPE": 6.18
+        }
+      },
+      "mejor_por_MAPE": "gradient_boosting"
+    },
+    "H3": {
+      "modelos": {
+        "ingenuo": {
+          "MAE": 2377.6,
+          "MAPE": 8.28
+        },
+        "ingenuo_estacional": {
+          "MAE": 3325.9,
+          "MAPE": 12.01
+        },
+        "ridge": {
+          "MAE": 2642.9,
+          "MAPE": 9.29
+        },
+        "random_forest": {
+          "MAE": 2192.7,
+          "MAPE": 7.76
+        },
+        "gradient_boosting": {
+          "MAE": 2182.2,
+          "MAPE": 7.67
+        },
+        "mllib_gbt": {
+          "MAE": 2105.4,
+          "MAPE": 7.42
+        },
+        "mllib_random_forest": {
+          "MAE": 2185.5,
+          "MAPE": 7.81
+        }
+      },
+      "mejor_por_MAPE": "mllib_gbt"
+    }
+  }
+}
