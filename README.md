@@ -75,7 +75,7 @@ anexan; (4) GOLD se recalcula solo para los meses donde SILVER y GOLD difieren (
 un mes que pasa de «solo_robos» a «ambas» cuando llegan sus reclamos); (5) se registra la carga. Si una corrida se interrumpe,
 la siguiente se repara sola. Limitación: no detecta correcciones de OSIPTEL sobre meses ya cargados (para eso, `--completa`).
 
-**Demostración con datos reales** (carpeta aislada `demo/`; no toca los datos ni la evidencia reales):
+**Demostración con datos reales** (carpeta aislada `demo/`; no toca los datos ni la evidencia reales), con el guion completo y las preguntas probables en [`docs/guion_demostracion.md`](docs/guion_demostracion.md):
 
 ```bash
 export OSIPTEL_HOME="$PWD/demo"
