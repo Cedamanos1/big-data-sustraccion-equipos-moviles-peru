@@ -1,0 +1,75 @@
+{
+  "corrida": {
+    "fecha": "2026-11-26T23:17:39",
+    "modo": "incremental",
+    "lake": "file:///home/olazabal/big-data-sustraccion-equipos-moviles-peru/data/lake",
+    "spark": "3.5.1",
+    "python": "3.11.2",
+    "maquina": "Debian",
+    "cpu": 4,
+    "filas_fuente": 276008,
+    "modelo": "vigente",
+    "fuentes": {
+      "robos": {
+        "modo": "sin_cambios",
+        "filas_nuevas": 0,
+        "meses_nuevos": 0,
+        "meses": ""
+      },
+      "reclamos": {
+        "modo": "sin_cambios",
+        "filas_nuevas": 0,
+        "meses_nuevos": 0,
+        "meses": ""
+      },
+      "cobertura": {
+        "modo": "sin_cambios",
+        "filas_nuevas": 0,
+        "meses_nuevos": 0,
+        "meses": ""
+      }
+    },
+    "gold_meses_recalculados": [],
+    "tiempos_s": {
+      "ingesta": 23.17,
+      "silver": 0.05,
+      "gold": 0.0,
+      "total": 23.22
+    }
+  },
+  "calidad": {
+    "modo": "incremental",
+    "robos": {
+      "fuente": "robos",
+      "sin_cambios": true
+    },
+    "reclamos": {
+      "fuente": "reclamos",
+      "sin_cambios": true
+    },
+    "cobertura": {
+      "fuente": "cobertura",
+      "sin_cambios": true
+    },
+    "join_operadora_mes": {
+      "solo_robos": 25,
+      "ambas": 519,
+      "solo_reclamos": 61
+    },
+    "join_depto_operadora_202303": {
+      "solo_reclamos": 11,
+      "ambas": 96,
+      "solo_cobertura": 0
+    },
+    "conservacion_totales_sustraidos": {
+      "silver": 15836038,
+      "gold": 15836038,
+      "ok": true
+    },
+    "acumulado": {
+      "robos": 1569,
+      "reclamos": 222944,
+      "cobertura": 51366
+    }
+  }
+}

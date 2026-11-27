@@ -1,5 +1,5 @@
 {
-  "fecha_ejecucion": "2026-11-15T19:54:35",
+  "fecha_ejecucion": "2026-11-26T23:20:00",
   "fuentes": {
     "robos": {
       "archivo": "9.1. EQUIPOS SUSTRAIDOS PERDIDOS O RECUPERADOS.xlsx",
@@ -24,5 +24,5 @@
     }
   },
   "filas_totales": 276008,
-  "tiempo_ingesta_s": 17.55
+  "tiempo_ingesta_s": 18.11
 }
