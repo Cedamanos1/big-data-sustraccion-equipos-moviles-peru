@@ -48,6 +48,7 @@ db9f686cb7fd6e656ab6c74345fe6d70450890a8d7118144034116f8d924808b  9.1. EQUIPOS S
 python -m unittest discover -s tests -v              # 1. pruebas de reglas (sin Spark)
 python src/pipeline.py                                # 2. INCREMENTAL: RAW→STAGING→SILVER→GOLD→tablas analíticas + modelo + tablero (solo meses nuevos)
 python src/analitica.py --consultas                   #    tablas analíticas (Spark SQL) y consultas de ejemplo
+python src/pipeline.py --reentrenar                   #    reentrena y exporta el modelo (por defecto se carga el ya entrenado)
 python src/modelo_spark.py                            #    modelo con Spark MLlib y comparación con scikit-learn (~10 min)
 python src/figuras.py                                 # 3. figuras del EDA (PNG para el informe)
 python src/benchmark.py --optimizacion                # 4. medición antes/después (§3.6)
