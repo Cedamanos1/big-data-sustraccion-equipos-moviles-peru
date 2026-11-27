@@ -1,37 +1,16 @@
 {
-  "fecha": "2026-11-15T19:54:35",
-  "modo": "incremental",
+  "fecha": "2026-11-06T19:40:11",
   "lake": "file:///home/olazabal/big-data-sustraccion-equipos-moviles-peru/data/lake",
   "spark": "3.5.1",
   "python": "3.11.2",
   "maquina": "Debian",
   "cpu": 4,
   "filas_fuente": 276008,
-  "fuentes": {
-    "robos": {
-      "modo": "sin_cambios",
-      "filas_nuevas": 0,
-      "meses_nuevos": 0,
-      "meses": ""
-    },
-    "reclamos": {
-      "modo": "sin_cambios",
-      "filas_nuevas": 0,
-      "meses_nuevos": 0,
-      "meses": ""
-    },
-    "cobertura": {
-      "modo": "sin_cambios",
-      "filas_nuevas": 0,
-      "meses_nuevos": 0,
-      "meses": ""
-    }
-  },
-  "gold_meses_recalculados": [],
   "tiempos_s": {
-    "ingesta": 17.56,
-    "silver": 0.06,
-    "gold": 0.0,
-    "total": 17.62
+    "ingesta": 23.36,
+    "silver": 53.38,
+    "gold": 13.29,
+    "modelo": 36.78,
+    "total": 126.81
   }
 }
