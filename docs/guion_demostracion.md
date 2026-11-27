@@ -8,7 +8,7 @@ Objetivo: mostrar que **los datos nuevos entran al pipeline, se reflejan en el t
 cd ~/big-data-sustraccion-equipos-moviles-peru
 source ~/BigData_UPAO/bigdata_env/bin/activate      # el prompt debe empezar con (bigdata_env)
 export SPARK_DRIVER_MEMORY=3g
-git pull && python -m unittest discover -s tests 2>&1 | tail -3     # Ran 49 tests ... OK
+git pull && python -m unittest discover -s tests 2>&1 | tail -3     # Ran 52 tests ... OK
 export OSIPTEL_HOME="$PWD/demo"
 python src/demo_incremental.py preparar               # datos recortados: robos hasta ago-2025, reclamos hasta jul-2025
 python src/pipeline.py 2>&1 | grep -v '"meses":'      # carga inicial (≈ 2 min). Dejarla ya corrida.
@@ -40,7 +40,7 @@ unset OSIPTEL_HOME
 
 ## Preguntas probables
 
-- **¿Por qué on-premise y no nube?** Decisión D-01: la VM ya estaba disponible y los datos (≈ 280 mil filas) caben sin problema; el diseño es portable (se cambia `OSIPTEL_LAKE_URI`) y el costo en AWS se estimó en USD 0.22 al mes.
+- **¿Por qué on-premise y no nube?** Decisión D-01 (detalle en §2.4): el costo no es el argumento (en la nube sería USD 0.22 al mes); el problema cabe en una sola máquina (Spark local aguantó 300× el volumen), el entorno es reproducible y el código es portable (se cambia `OSIPTEL_LAKE_URI`). Se acepta que la nube es más rápida de poner en marcha y escala sin armar un clúster; se migraría si el volumen, la disponibilidad o los usuarios lo exigieran.
 - **¿Por qué MLlib no es el modelo final?** Rinde igual con unas 600 filas y tarda unos 10 minutos frente a unos 40 segundos. Con millones de filas sí convendría; el código ya está probado.
 - **¿Cómo sabe qué es «nuevo»?** Compara los meses del archivo contra los que ya están en SILVER y usa una huella SHA-256 para descartar archivos idénticos. Detecta incluso un mes que llega tarde.
 - **¿Qué no detecta?** Correcciones a meses ya cargados: en ese caso se usa `--completa`.
