@@ -80,5 +80,17 @@ class TestResumenMeses(unittest.TestCase):
         self.assertEqual(inc.resumen_meses([]), (None, None, ""))
 
 
+class TestGuardarEvidencia(unittest.TestCase):
+    def test_sin_cambios_no_pisa_la_evidencia(self):
+        self.assertFalse(inc.guardar_evidencia("incremental", False, True))
+
+    def test_con_cambios_o_completa_si_guarda(self):
+        self.assertTrue(inc.guardar_evidencia("incremental", True, True))
+        self.assertTrue(inc.guardar_evidencia("completa", True, True))
+
+    def test_si_no_existe_la_evidencia_se_crea(self):
+        self.assertTrue(inc.guardar_evidencia("incremental", False, False))
+
+
 if __name__ == "__main__":
     unittest.main()

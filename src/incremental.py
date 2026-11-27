@@ -39,6 +39,12 @@ def decidir_modo(sha_actual, sha_ultima):
     return "sin_cambios" if (sha_ultima is not None and sha_actual == sha_ultima) else "incremental"
 
 
+def guardar_evidencia(modo, hubo_cambios, existe_evidencia):
+    """¿Esta corrida debe actualizar calidad.json y corrida.json?
+    Una corrida incremental «sin cambios» no debe pisar la evidencia de la última corrida que sí procesó datos."""
+    return modo != "incremental" or hubo_cambios or not existe_evidencia
+
+
 def plan_gold(meses_desfasados, cobertura_nueva, existe_j2, existen_dimensiones):
     """Qué hay que recalcular en GOLD. J1 se recalcula por mes; J2 y dimensiones son tablas pequeñas."""
     meses = sorted(set(meses_desfasados))

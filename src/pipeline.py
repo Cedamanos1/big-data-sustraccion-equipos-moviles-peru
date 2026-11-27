@@ -162,7 +162,11 @@ def correr(spark, modelo=True, completa=False):
 
     tiempos["total"] = round(sum(tiempos.values()), 2)
     EVIDENCIA.mkdir(parents=True, exist_ok=True)
-    (EVIDENCIA / "calidad.json").write_text(json.dumps(calidad, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+    # una corrida «sin cambios» no pisa la evidencia de la última corrida que sí procesó datos;
+    # cada corrida queda además en corridas/ (historial, una por lote)
+    guardar = incremental.guardar_evidencia(modo, cambio_fuente, (EVIDENCIA / "calidad.json").exists())
+    if guardar:
+        (EVIDENCIA / "calidad.json").write_text(json.dumps(calidad, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     corrida = {"fecha": lote, "modo": modo, "lake": LAKE, "spark": spark.version,
                "python": platform.python_version(), "maquina": platform.node(), "cpu": os.cpu_count(),
                "filas_fuente": manifiesto["filas_totales"],
@@ -170,7 +174,11 @@ def correr(spark, modelo=True, completa=False):
                                          "meses": r.get("meses_lista") or ""} for r in registros},
                "gold_meses_recalculados": plan["j1_meses"] if plan else ([] if modo == "incremental" else "todos"),
                "tiempos_s": tiempos}
-    (EVIDENCIA / "corrida.json").write_text(json.dumps(corrida, indent=2, ensure_ascii=False), encoding="utf-8")
+    if guardar:
+        (EVIDENCIA / "corrida.json").write_text(json.dumps(corrida, indent=2, ensure_ascii=False), encoding="utf-8")
+    (EVIDENCIA / "corridas").mkdir(parents=True, exist_ok=True)
+    (EVIDENCIA / "corridas" / f"corrida_{lote.replace(':', '-')}.json").write_text(
+        json.dumps({"corrida": corrida, "calidad": calidad}, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     print(json.dumps(corrida, indent=2, ensure_ascii=False))
     return corrida
 
