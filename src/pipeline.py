@@ -91,7 +91,7 @@ def _controles(spark, calidad):
     return j1, j2
 
 
-def correr(spark, modelo=True, completa=False):
+def correr(spark, modelo=True, completa=False, reentrenar=False):
     lote = datetime.now().isoformat(timespec="seconds")
     tiempos, t = {}, time.perf_counter()
     manifiesto = ingesta.ingestar()
@@ -144,13 +144,14 @@ def correr(spark, modelo=True, completa=False):
     else:
         print("[ANALÍTICA] sin datos nuevos: tablas analíticas vigentes")
 
+    modelo_modo = "vigente"
     if modelo:
         import modelo as m, tablero
-        pendiente = cambio_fuente or not TABLERO.exists() or not (EVIDENCIA / "pronostico_mes_siguiente.csv").exists()
+        pendiente = cambio_fuente or reentrenar or not TABLERO.exists() or not (EVIDENCIA / "pronostico_mes_siguiente.csv").exists()
         if pendiente:
             t = time.perf_counter()
             g_pd, j2_pd = j1.toPandas(), j2.toPandas()
-            m.ejecutar(g_pd, EVIDENCIA)
+            modelo_modo = m.ejecutar(g_pd, EVIDENCIA, reentrenar=reentrenar)["modo_modelo"]
             tiempos["modelo"] = round(time.perf_counter() - t, 2)
             datos = tablero.generar(g_pd, j2_pd, EVIDENCIA, TABLERO, manifiesto["fuentes"], an=analitica.leer(spark))
             calidad["reconciliacion_tablero_sql"] = datos["reconciliacion"]
@@ -169,7 +170,7 @@ def correr(spark, modelo=True, completa=False):
         (EVIDENCIA / "calidad.json").write_text(json.dumps(calidad, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     corrida = {"fecha": lote, "modo": modo, "lake": LAKE, "spark": spark.version,
                "python": platform.python_version(), "maquina": platform.node(), "cpu": os.cpu_count(),
-               "filas_fuente": manifiesto["filas_totales"],
+               "filas_fuente": manifiesto["filas_totales"], "modelo": modelo_modo if modelo else "omitido",
                "fuentes": {r["fuente"]: {"modo": r["modo"], "filas_nuevas": r["filas_nuevas"], "meses_nuevos": r["meses_nuevos"],
                                          "meses": r.get("meses_lista") or ""} for r in registros},
                "gold_meses_recalculados": plan["j1_meses"] if plan else ([] if modo == "incremental" else "todos"),
@@ -187,10 +188,11 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--sin-modelo", action="store_true")
     ap.add_argument("--completa", action="store_true", help="reconstruye SILVER y GOLD desde RAW (sobrescribe)")
+    ap.add_argument("--reentrenar", action="store_true", help="reentrena y exporta el modelo (por defecto se carga el ya entrenado)")
     ap.add_argument("--estado", action="store_true", help="muestra la bitácora de cargas y el contenido del lake")
     a = ap.parse_args()
     sp = spark_session()
     if a.estado:
         incremental.mostrar_estado(sp)
     else:
-        correr(sp, modelo=not a.sin_modelo, completa=a.completa)
+        correr(sp, modelo=not a.sin_modelo, completa=a.completa, reentrenar=a.reentrenar)

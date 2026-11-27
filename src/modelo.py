@@ -12,9 +12,15 @@ y luego se reconstruye el nivel. Los árboles no extrapolan niveles; predecir la
 evita ese problema. H = 1 (principal) y H = 3 (secundario).
 Partición temporal: entrenamiento hasta jun-2024 (excluye el choque COVID mar-2020 a mar-2021),
 prueba jul-2024 a ene-2026. Hiperparámetros por validación cruzada temporal (TimeSeriesSplit).
+
+Modelo exportado: el Gradient Boosting entrenado con toda la historia se guarda en docs/evidencia/modelo_gb_h1.joblib.
+Cuando llegan datos nuevos el pipeline NO reentrena: carga ese modelo y lo aplica (variables calculadas con los meses nuevos).
+Para reentrenar: python src/pipeline.py --reentrenar (o python src/modelo.py --reentrenar).
 """
 import json
+from datetime import datetime
 from pathlib import Path
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge
@@ -26,6 +32,7 @@ INICIO_PRUEBA = "2024-07-01"
 COVID = ("2020-03-01", "2021-03-01")
 SEED = 42
 MODELOS = ["ingenuo", "ingenuo_estacional", "ridge", "random_forest", "gradient_boosting"]
+ARCHIVO_MODELO = "modelo_gb_h1.joblib"   # modelo entrenado y exportado (se versiona con la evidencia)
 
 
 def preparar(g: pd.DataFrame, H: int, futuro: bool = False):
@@ -99,41 +106,95 @@ def evaluar(g: pd.DataFrame, H: int):
     return preds, info
 
 
-def pronostico_siguiente(g: pd.DataFrame, info_h1: dict):
-    """Reentrena el modelo elegido (Gradient Boosting, hiperparámetros elegidos en la validación)
-    con TODA la historia disponible (sin el periodo COVID) y pronostica el mes siguiente al último dato.
-    El intervalo usa el MAE de prueba de cada operadora (≈ error esperado)."""
-    futuro, hist, feats = preparar(g, 1, futuro=True)
+def entrenar_final(g: pd.DataFrame, info_h1: dict):
+    """Entrena el modelo elegido (Gradient Boosting, hiperparámetros elegidos en la validación) con TODA la
+    historia disponible (sin el periodo COVID). Devuelve el paquete exportable: modelo, variables y metadatos."""
+    _, hist, feats = preparar(g, 1, futuro=True)
     tr = hist[~hist.fecha_mes.between(*COVID)].sort_values(["fecha_mes", "operadora"], kind="stable")
-    gb = GradientBoostingRegressor(random_state=SEED, **info_h1["hiperparametros"]["gradient_boosting"]).fit(tr[feats], tr.y)
+    hp = info_h1["hiperparametros"]["gradient_boosting"]
+    gb = GradientBoostingRegressor(random_state=SEED, **hp).fit(tr[feats], tr.y)
+    return {"modelo": gb, "feats": feats, "hiperparametros": hp, "n_train": int(len(tr)),
+            "entrenado_con_hasta": str(tr.fecha_mes.max().date()),
+            "entrenado_el": datetime.now().isoformat(timespec="seconds")}
+
+
+def guardar_modelo(paquete: dict, ruta: Path):
+    joblib.dump(paquete, ruta)
+
+
+def cargar_modelo(ruta: Path) -> dict:
+    return joblib.load(ruta)
+
+
+def debe_reentrenar(existe_modelo: bool, reentrenar: bool, feats_modelo=None, feats_actuales=None) -> bool:
+    """Se entrena solo si se pide, si no hay modelo guardado o si las variables ya no coinciden."""
+    if reentrenar or not existe_modelo:
+        return True
+    return feats_modelo is not None and feats_actuales is not None and list(feats_modelo) != list(feats_actuales)
+
+
+def pronosticar(g: pd.DataFrame, paquete: dict, mae_por_operadora: dict):
+    """Aplica el modelo YA ENTRENADO a los datos disponibles y pronostica el mes siguiente al último dato.
+    No ajusta nada: solo calcula variables con la historia (incluidos los meses nuevos) y predice.
+    El intervalo usa el MAE de prueba de cada operadora (≈ error esperado)."""
+    futuro, _, feats = preparar(g, 1, futuro=True)
     out = futuro[["fecha_mes", "operadora", "base"]].copy()
-    out["pronostico"] = (futuro.base * (1 + gb.predict(futuro[feats]))).round()
-    out["mae_prueba"] = out.operadora.map(info_h1["MAE_prueba_por_operadora"])
+    out["pronostico"] = (futuro.base * (1 + paquete["modelo"].predict(futuro[feats]))).round()
+    out["mae_prueba"] = out.operadora.map(mae_por_operadora)
     out["variacion_pct"] = (100 * (out.pronostico / out.base - 1)).round(1)
     return out.rename(columns={"base": "ultimo_observado"})
 
 
-def ejecutar(g: pd.DataFrame, salida: Path):
-    """g: gold_operadora_mes en pandas. Escribe métricas y predicciones en `salida`."""
+def pronostico_siguiente(g: pd.DataFrame, info_h1: dict):
+    """Entrena con toda la historia y pronostica el mes siguiente (camino de reentrenamiento)."""
+    return pronosticar(g, entrenar_final(g, info_h1), info_h1["MAE_prueba_por_operadora"])
+
+
+def ejecutar(g: pd.DataFrame, salida: Path, reentrenar: bool = False):
+    """g: gold_operadora_mes en pandas. Escribe métricas, predicciones y el modelo exportado en `salida`.
+
+    Por defecto, si ya existe un modelo entrenado, NO se reentrena: se carga y se aplica a los datos nuevos
+    (así funciona la carga incremental). Con reentrenar=True (o la primera vez) se evalúa, se entrena y se exporta.
+    El dict devuelto incluye 'modo_modelo' ('entrenado' o 'cargado')."""
     g = g.copy()
     g["fecha_mes"] = pd.to_datetime(g["fecha_mes"])
     salida.mkdir(parents=True, exist_ok=True)
+    ruta_modelo, ruta_info = salida / ARCHIVO_MODELO, salida / "modelo_metricas.json"
+
+    if not debe_reentrenar(ruta_modelo.exists() and ruta_info.exists(), reentrenar):
+        paquete = cargar_modelo(ruta_modelo)
+        feats_actuales = preparar(g, 1, futuro=True)[2]
+        if not debe_reentrenar(True, False, paquete["feats"], feats_actuales):
+            info = json.loads(ruta_info.read_text(encoding="utf-8"))
+            prox = pronosticar(g, paquete, info["H1"]["MAE_prueba_por_operadora"])
+            prox.to_csv(salida / "pronostico_mes_siguiente.csv", index=False)
+            print(f"[MODELO] modelo ya entrenado (con datos hasta {paquete['entrenado_con_hasta']}, "
+                  f"{paquete['entrenado_el']}): se aplica a los datos nuevos, sin reentrenar")
+            print("[PRONÓSTICO]", prox.assign(fecha_mes=prox.fecha_mes.dt.date).to_dict("records"))
+            info["modo_modelo"] = "cargado"
+            return info
+
     info = {}
     for H in (1, 3):
         preds, info[f"H{H}"] = evaluar(g, H)
         preds.to_csv(salida / f"predicciones_prueba_H{H}.csv", index=False)
-    (salida / "modelo_metricas.json").write_text(json.dumps(info, indent=2, ensure_ascii=False), encoding="utf-8")
-    prox = pronostico_siguiente(g, info["H1"])
+    ruta_info.write_text(json.dumps(info, indent=2, ensure_ascii=False), encoding="utf-8")
+    paquete = entrenar_final(g, info["H1"])
+    guardar_modelo(paquete, ruta_modelo)
+    prox = pronosticar(g, paquete, info["H1"]["MAE_prueba_por_operadora"])
     prox.to_csv(salida / "pronostico_mes_siguiente.csv", index=False)
+    print(f"[MODELO] entrenado y exportado a {ruta_modelo.name} (datos hasta {paquete['entrenado_con_hasta']})")
     print("[PRONÓSTICO]", prox.assign(fecha_mes=prox.fecha_mes.dt.date).to_dict("records"))
     for h, v in info.items():
         print(f"[MODELO {h}] " + " | ".join(f"{m}: MAE={r['MAE']:,.0f} MAPE={r['MAPE']}%" for m, r in v["metricas"].items()))
+    info["modo_modelo"] = "entrenado"
     return info
 
 
 if __name__ == "__main__":
     from pyspark.sql import SparkSession
     from config import ruta, EVIDENCIA
+    import sys
     spark = SparkSession.builder.appName("OSIPTEL_modelo").getOrCreate()
     g = spark.read.parquet(ruta("gold", "gold_operadora_mes")).toPandas()
-    ejecutar(g, EVIDENCIA)
+    ejecutar(g, EVIDENCIA, reentrenar="--reentrenar" in sys.argv)
