@@ -34,6 +34,17 @@ def _unico(carpeta: Path, patron: str) -> Path:
     return archivos[0]
 
 
+def _ultimo(carpeta: Path, patron: str) -> Path:
+    """El archivo más reciente de la carpeta. Una versión nueva de la fuente llega con otro nombre (el stream la detecta por
+    su ruta) y las anteriores se conservan en RAW como respaldo inmutable; el SHA-256 decide después si hay datos nuevos."""
+    archivos = sorted(carpeta.glob(patron), key=lambda a: (a.stat().st_mtime, a.name))
+    if not archivos:
+        raise FileNotFoundError(f"No hay ningún archivo {patron} en {carpeta}. Ver README §2.")
+    if len(archivos) > 1:
+        print(f"[INGESTA] {carpeta.name}: {len(archivos)} versiones en RAW; se usa la más reciente: {archivos[-1].name}")
+    return archivos[-1]
+
+
 def _xlsx_a_csv(path: Path, fila_encabezado: int, columnas, destino: Path) -> int:
     """Lee la hoja 'Dataset' saltando el título, descarta la columna A vacía y filas totalmente vacías."""
     df = pd.read_excel(path, sheet_name="Dataset", header=fila_encabezado, dtype=str).iloc[:, 1:]
@@ -50,11 +61,11 @@ def ingestar():
     t0 = time.perf_counter()
     manifiesto = {"fecha_ejecucion": datetime.now().isoformat(timespec="seconds"), "fuentes": {}}
 
-    f1 = _unico(FUENTES["robos"], "*.xlsx")
+    f1 = _ultimo(FUENTES["robos"], "*.xlsx")
     n1 = _xlsx_a_csv(f1, 3, COLS_ROBOS, STAGING / "robos" / "robos.csv")
-    f2 = _unico(FUENTES["reclamos"], "*.xlsx")
+    f2 = _ultimo(FUENTES["reclamos"], "*.xlsx")
     n2 = _xlsx_a_csv(f2, 4, COLS_RECLAMOS, STAGING / "reclamos" / "reclamos.csv")
-    f3 = _unico(FUENTES["cobertura"], "*.csv")
+    f3 = _ultimo(FUENTES["cobertura"], "*.csv")
     with open(f3, "rb") as f:
         n3 = sum(1 for _ in f) - 1  # menos el encabezado
 
