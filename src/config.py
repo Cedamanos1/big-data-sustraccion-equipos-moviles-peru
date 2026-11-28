@@ -15,8 +15,23 @@ STAGING = HOME / "data" / "staging"                # XLSX convertidos a CSV UTF-
 EVIDENCIA = HOME / "docs" / "evidencia"            # JSON de calidad, tiempos, métricas
 TABLERO = HOME / "docs" / "index.html"             # capa de consumo
 
+# Despliegue en la nube (AWS): un bucket S3 por zona. Si no se definen estas variables, todo sigue local.
+#   OSIPTEL_S3_BRONZE  originales (raw/) y convertidos (staging/)
+#   OSIPTEL_S3_SILVER  SILVER, QUARANTINE y bitácora (_control/)
+#   OSIPTEL_S3_GOLD    GOLD, modelo exportado, evidencia y tablero (consumo/)
+S3_BRONZE = os.environ.get("OSIPTEL_S3_BRONZE", "")
+S3_SILVER = os.environ.get("OSIPTEL_S3_SILVER", "")
+S3_GOLD = os.environ.get("OSIPTEL_S3_GOLD", "")
+REGION = os.environ.get("AWS_REGION", os.environ.get("AWS_DEFAULT_REGION", "us-east-2"))
+ES_NUBE = bool(S3_BRONZE and S3_SILVER and S3_GOLD)
+
 # Destino del lake: local por defecto; p. ej. hdfs:///user/grupo11/osiptel o s3a://bucket/osiptel
-LAKE = os.environ.get("OSIPTEL_LAKE_URI", (HOME / "data" / "lake").as_uri())
+LAKE = os.environ.get("OSIPTEL_LAKE_URI", f"s3a://{S3_SILVER}" if ES_NUBE else (HOME / "data" / "lake").as_uri())
+
+# Streaming (Spark Structured Streaming) entre las fuentes y BRONZE: de dónde lee, dónde recuerda qué ya vio y dónde registra llegadas
+RAW_URI = f"s3a://{S3_BRONZE}/raw/" if ES_NUBE else RAW.as_uri() + "/"
+CHECKPOINT_URI = f"s3a://{S3_BRONZE}/_checkpoints/llegadas" if ES_NUBE else (HOME / "data" / "checkpoints" / "llegadas").as_uri()
+LLEGADAS_URI = f"s3a://{S3_BRONZE}/bronze/archivos_llegados" if ES_NUBE else (HOME / "data" / "lake" / "bronze" / "archivos_llegados").as_uri()
 
 FUENTES = {
     "robos": RAW / "robos",          # F1 · 9.1. EQUIPOS SUSTRAIDOS PERDIDOS O RECUPERADOS.xlsx
@@ -30,5 +45,8 @@ MATERIAS_CALIDAD = ["CALIDAD E IDONEIDAD EN LA PRESTACION DEL SERVICIO", "FALTA 
 
 
 def ruta(zona, tabla):
-    """Ruta lógica de una tabla dentro del lake: <LAKE>/<zona>/<tabla>."""
+    """Ruta lógica de una tabla dentro del lake: <LAKE>/<zona>/<tabla>.
+    En la nube, GOLD vive en su propio bucket; SILVER, QUARANTINE y _control, en el bucket de SILVER."""
+    if ES_NUBE and zona == "gold":
+        return f"s3a://{S3_GOLD}/{zona}/{tabla}"
     return f"{LAKE.rstrip('/')}/{zona}/{tabla}"

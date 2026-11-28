@@ -15,7 +15,7 @@ import argparse, json, os, platform, sys, time
 from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import EVIDENCIA, LAKE, TABLERO, ruta
+from config import EVIDENCIA, LAKE, TABLERO, ruta, ES_NUBE, REGION
 import ingesta, transform, gold, incremental, analitica
 
 
@@ -26,6 +26,11 @@ def spark_session(app="OSIPTEL_pipeline"):
         b = b.master(os.environ["SPARK_MASTER"])
     if os.environ.get("SPARK_DRIVER_MEMORY"):          # p. ej. export SPARK_DRIVER_MEMORY=3g (≈ 70 % de la RAM de la VM)
         b = b.config("spark.driver.memory", os.environ["SPARK_DRIVER_MEMORY"])
+    if ES_NUBE or LAKE.startswith("s3a://"):           # Spark habla con S3 por s3a:// con las credenciales del rol de IAM de la EC2
+        b = (b.config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.4")
+              .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain")
+              .config("spark.hadoop.fs.s3a.endpoint", f"s3.{REGION}.amazonaws.com")
+              .config("spark.hadoop.fs.s3a.path.style.access", "false"))
     spark = (b.config("spark.sql.shuffle.partitions", os.environ.get("SHUFFLE_PARTITIONS", "8"))
               .config("spark.sql.session.timeZone", "America/Lima")
               .config("spark.sql.ansi.enabled", "false")
@@ -94,7 +99,12 @@ def _controles(spark, calidad):
 def correr(spark, modelo=True, completa=False, reentrenar=False):
     lote = datetime.now().isoformat(timespec="seconds")
     tiempos, t = {}, time.perf_counter()
+    if ES_NUBE:                                         # los originales y el modelo exportado viven en S3
+        import nube
+        nube.bajar_raw(); nube.bajar_evidencia()
     manifiesto = ingesta.ingestar()
+    if ES_NUBE:
+        nube.subir_staging()
     tiempos["ingesta"] = round(time.perf_counter() - t, 2)
     shas = {k: v["sha256"] for k, v in manifiesto["fuentes"].items()}
 
@@ -180,6 +190,9 @@ def correr(spark, modelo=True, completa=False, reentrenar=False):
     (EVIDENCIA / "corridas").mkdir(parents=True, exist_ok=True)
     (EVIDENCIA / "corridas" / f"corrida_{lote.replace(':', '-')}.json").write_text(
         json.dumps({"corrida": corrida, "calidad": calidad}, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+    if ES_NUBE:
+        nube.subir_resultados()
+        print("[NUBE] evidencia, modelo y tablero subidos a S3 (gold/evidencia y gold/consumo)")
     print(json.dumps(corrida, indent=2, ensure_ascii=False))
     return corrida
 
