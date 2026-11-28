@@ -19,3 +19,5 @@ derby.log
 
 # carpeta de la demostración incremental
 demo/
+.venv/
+data/checkpoints/
